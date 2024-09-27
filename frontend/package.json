@@ -15,7 +15,7 @@
     "@mui/material": "^6.1.1",
     "@react-pdf/renderer": "^4.0.0",
     "@types/pdfjs-dist": "^2.10.377",
-    "@types/react-pdf": "^6.2.0",
+    "@types/react-pdf": "^7.0.0",
     "axios": "^1.7.7",
     "file-saver": "^2.0.5",
     "pdf-lib": "^1.17.1",
