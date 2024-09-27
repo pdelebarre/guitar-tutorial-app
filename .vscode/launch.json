@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-GuitarBackendApplication<guitar-backend>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.guitartutorials.guitar_backend.GuitarBackendApplication",
+            "projectName": "guitar-backend",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-TutorialApplication<guitar-tutorial>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.guitar.tutorial.TutorialApplication",
+            "projectName": "guitar-tutorial",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
