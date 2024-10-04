@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { PDFDocument, rgb } from "pdf-lib";
 import { saveAs } from "file-saver";
 import { Button, Box } from "@mui/material";
-
 const AnnotatePDF = () => {
   const [pdfFile, setPdfFile] = useState<File | null>(null);
 

@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "8080:8080"
+    environment:
+      # Adapt path for the container
+      TUTORIALS_PATH: /app/tutorials  # Use an internal path inside the container
+
+      # Default to dev profile (using H2)
+      SPRING_PROFILES_ACTIVE: dev
+      
+    volumes:
+      - /Volumes/LaCie/dev/guitar-tutorial-app/tutorials:/app/tutorials  # Map local to container path
+
+    networks:
+      - guitartuto-network
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    environment:
+      # Point the frontend to the backend API on port 8080
+      - VITE_API_URL=http://backend:8080/api
+    depends_on:
+      - backend
+    networks:
+      - guitartuto-network
+
+networks:
+  guitartuto-network:
+    driver: bridge

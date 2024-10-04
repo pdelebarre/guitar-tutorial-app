@@ -5,6 +5,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -19,10 +21,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/tutorials")
 public class TutorialController {
+        private static final Logger logger = LoggerFactory.getLogger(TutorialController.class);
+
 
     @Value("${tutorials.path}")
     private String tutorialsDirectory; // Injected path from application.yml or .env
 
+
+    @GetMapping("/test")
+    public String testEndpoint() {
+        logger.info("Test endpoint called"); // Debug log
+        // Add other logic here and log exceptions if needed
+        return tutorialsDirectory;
+    }
     // Serve specific files (video, pdf, srt) based on file name and extension
     @GetMapping("/{fileName}/{extension}")
     public ResponseEntity<Resource> getFile(@PathVariable String fileName, @PathVariable String extension) {

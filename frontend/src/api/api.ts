@@ -1,10 +1,9 @@
 import axios from "axios";
+
 import { Comment, Playlist, Tutorial } from "../types/types";
 
 // Get the API URL from the environment variable
 const apiBaseUrl = import.meta.env.VITE_API_URL;
-
-console.log("apiBaseUrl :>> ", apiBaseUrl);
 
 // Check if the environment variable is set correctly
 if (!apiBaseUrl) {
@@ -16,20 +15,27 @@ const api = axios.create({
   baseURL: apiBaseUrl,
 });
 
+// Debugging the axios instance baseURL
+console.log("Axios baseURL: ", api.defaults.baseURL);
+
 // Fetch list of file names (tutorials) from the backend
 export const getTutorials = async (): Promise<string[]> => {
+  console.log("API base URL being used: ", api.defaults.baseURL);
   const response = await api.get("/tutorials/");
   return response.data;
 };
 
 // Fetch details for a specific tutorial
 export const getTutorial = async (fileName: string): Promise<Tutorial> => {
+  console.log("API base URL being used: ", api.defaults.baseURL);
+
   const response = await api.get(`/tutorials/${fileName}`);
   return response.data;
 };
 
 // Fetch comments for a specific tutorial
 export const getComments = async (tutorialId: number): Promise<Comment[]> => {
+  console.log("API base URL being used: ", api.defaults.baseURL);
   const response = await api.get(`/comments/tutorial/${tutorialId}`);
   return response.data;
 };
