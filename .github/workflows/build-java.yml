@@ -6,8 +6,6 @@ on:
   push:
     branches: [ "main" ]
     tags: [ 'v*.*.*' ]
-    paths:
-      - "backend/**" # Only run if only a BE file has changed
   pull_request:
     branches: [ "main" ]
 
