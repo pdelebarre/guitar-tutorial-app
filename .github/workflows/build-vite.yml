@@ -43,7 +43,7 @@ jobs:
       - name: Extract version from package.json
         id: extract_version
         run: |
-          VERSION=$(jq -r '.version' package.json)
+          VERSION=$(jq -r '.version' ./frontend/package.json)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       # Install the cosign tool except on PR
