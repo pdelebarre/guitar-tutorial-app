@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from "axios";
 
-import { Comment, Playlist, Tutorial } from "../types/types";
+import { Comment, Playlist } from "../types/types";
 
 // Get the API URL from the environment variable
-const apiBaseUrl = import.meta.env.VITE_API_URL;
+export const apiBaseUrl = import.meta.env.VITE_API_URL;
 
 // Check if the environment variable is set correctly
 if (!apiBaseUrl) {
@@ -25,14 +26,42 @@ export const getTutorials = async (): Promise<string[]> => {
   return response.data;
 };
 
-// Fetch details for a specific tutorial
-export const getTutorial = async (fileName: string): Promise<Tutorial> => {
-  console.log("API base URL being used: ", api.defaults.baseURL);
-
-  const response = await api.get(`/tutorials/${fileName}`);
-  return response.data;
+// Utility function to URL-encode the file name
+const encodeFileName = (fileName: string) => {
+  return encodeURIComponent(fileName);
 };
 
+// Fetch MP4 file URL
+export const getVideoUrl = async (fileName: string): Promise<string> => {
+  const encodedFileName = encodeFileName(fileName); // Encode the file name
+  return `${api.defaults.baseURL}/tutorials/${encodedFileName}/mp4`;  // API path for video file
+};
+
+// Fetch SRT file URL
+export const getSubtitleUrl = async (fileName: string): Promise<string | null> => {
+  try {
+    const encodedFileName = encodeFileName(fileName); // Encode the file name
+    // const response =
+      // await axios.get(`/tutorials/${encodedFileName}/srt`, { responseType: 'blob' });
+    return `${api.defaults.baseURL}/tutorials/${encodedFileName}/srt`;  // Return the subtitle URL
+  } catch (error) {
+    console.error('Subtitle file not found:', error);
+    return null;
+  }
+};
+
+// Fetch PDF tablature URL
+export const getTablatureUrl = async (fileName: string): Promise<string | null> => {
+  try {
+    const encodedFileName = encodeFileName(fileName); // Encode the file name
+    // const response =
+      // await axios.get(`/tutorials/${encodedFileName}/pdf`, { responseType: 'blob' });
+    return `${api.defaults.baseURL}/tutorials/${encodedFileName}/pdf`;  // Return the tablature URL
+  } catch (error) {
+    console.error('Tablature file not found:', error);
+    return null;
+  }
+};
 // Fetch comments for a specific tutorial
 export const getComments = async (tutorialId: number): Promise<Comment[]> => {
   console.log("API base URL being used: ", api.defaults.baseURL);

@@ -1,8 +1,8 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { Container, Typography, Box } from "@mui/material";
-import TutorialPlayer from "../components/TutorialPlayer";
-
+import TutorialPlayer from "../components/TutorialPlayer/TutorialPlayer";
+// import { apiBaseUrl } from "../api/api";
 const TutorialPage: React.FC = () => {
   const { fileName } = useParams<{ fileName: string }>();
 
@@ -14,10 +14,8 @@ const TutorialPage: React.FC = () => {
 
       <Box mb={2}>
         <TutorialPlayer
-          videoUrl={`/api/tutorials/${fileName}/mp4`} // Video URL
-          subtitleUrl={`/api/tutorials/${fileName}/srt`} // Subtitle URL
-          tablatureUrl={`/api/tutorials/${fileName}/pdf`} // Tablature URL
-        />
+          fileName={`${fileName}`}
+       />
       </Box>
     </Container>
   );

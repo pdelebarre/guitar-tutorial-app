@@ -1,10 +1,9 @@
-version: '3.8'
 services:
   backend:
+    container_name: backend
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: backend
     ports:
       - "8080:8080"
     environment:
@@ -15,17 +14,19 @@ services:
       SPRING_PROFILES_ACTIVE: dev
       
     volumes:
-      - /Volumes/LaCie/dev/guitar-tutorial-app/tutorials:/app/tutorials  # Map local to container path
-
+      - /Volumes/LaCie/dev/guitar-tutorial-app/tutorials:/app/tutorials
     networks:
       - guitartuto-network
+    # Do not include depends_on here, so backend is independent in dev
 
   frontend:
-    build: ./frontend
+    container_name: frontend
+    build:
+      context: ./frontend
+    image: pdelebarre/frontend:${BUILD_ENV:-dev}
     ports:
       - "3000:80"
     environment:
-      # Point the frontend to the backend API on port 8080
       - VITE_API_URL=http://backend:8080/api
     depends_on:
       - backend
