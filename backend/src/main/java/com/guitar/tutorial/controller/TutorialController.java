@@ -13,6 +13,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ public class TutorialController {
 
 
     @GetMapping("/test")
+    @CrossOrigin
     public String testEndpoint() {
         logger.info("Test endpoint called"); // Debug log
         // Add other logic here and log exceptions if needed
@@ -36,6 +38,7 @@ public class TutorialController {
     }
     // Serve specific files (video, pdf, srt) based on file name and extension
     @GetMapping("/{fileName}/{extension}")
+    @CrossOrigin
     public ResponseEntity<Resource> getFile(@PathVariable String fileName, @PathVariable String extension) {
         try {
             // Create the file path using the injected tutorialsDirectory and file name
@@ -56,6 +59,7 @@ public class TutorialController {
 
     // List all available tutorial file names (without extensions)
     @GetMapping("/")
+    @CrossOrigin
     public ResponseEntity<?> listTutorials() {
         try {
             // List unique tutorial file names by scanning the directory
