@@ -13,7 +13,7 @@ env:
   # Docker Hub registry
   REGISTRY: docker.io
   # Docker image name, e.g., <your-docker-username>/<your-repo>
-  IMAGE_NAME: pdelebarre/backend
+  IMAGE_NAME: ${{ github.repository }}-backend
 
 jobs:
   build:
