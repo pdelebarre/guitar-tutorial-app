@@ -22,20 +22,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/tutorials")
 public class TutorialController {
-        private static final Logger logger = LoggerFactory.getLogger(TutorialController.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(TutorialController.class);
 
     @Value("${tutorials.path}")
     private String tutorialsDirectory; // Injected path from application.yml or .env
-
 
     @GetMapping("/test")
     @CrossOrigin
     public String testEndpoint() {
         logger.info("Test endpoint called"); // Debug log
-        // Add other logic here and log exceptions if needed
         return tutorialsDirectory;
     }
+
     // Serve specific files (video, pdf, srt) based on file name and extension
     @GetMapping("/{fileName}/{extension}")
     @CrossOrigin
@@ -43,16 +41,21 @@ public class TutorialController {
         try {
             // Create the file path using the injected tutorialsDirectory and file name
             Path filePath = Paths.get(tutorialsDirectory).resolve(fileName + "." + extension);
+            logger.info("Fetching file from path: {}", filePath.toString()); // Replaced System.out with logger
+
             Resource resource = new UrlResource(filePath.toUri());
 
             if (resource.exists() && resource.isReadable()) {
                 HttpHeaders headers = new HttpHeaders();
                 headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"");
+                logger.info("File found and is readable: {}", resource.getFilename());
                 return new ResponseEntity<>(resource, headers, HttpStatus.OK);
             } else {
+                logger.warn("File not found or is not readable: {}", filePath.toString());
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
         } catch (Exception e) {
+            logger.error("Error occurred while fetching the file: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -62,8 +65,9 @@ public class TutorialController {
     @CrossOrigin
     public ResponseEntity<?> listTutorials() {
         try {
-            // List unique tutorial file names by scanning the directory
             Path tutorialsPath = Paths.get(tutorialsDirectory);
+            logger.info("Listing tutorials in directory: {}", tutorialsPath.toString());
+
             return ResponseEntity.ok(
                     Files.list(tutorialsPath)
                             .filter(Files::isRegularFile)
@@ -71,6 +75,7 @@ public class TutorialController {
                             .distinct()
                             .collect(Collectors.toList()));
         } catch (Exception e) {
+            logger.error("Error occurred while listing tutorial files: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
