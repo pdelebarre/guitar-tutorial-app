@@ -17,7 +17,11 @@ public class PDFAnnotation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long tutorialId; // To associate annotation with a song
-    private String username;
-    private String annotationText;
+    private Long tutorialId; // Assuming tablatureUrl corresponds to tutorialId
+
+    private String contentText;
+    private String contentImage;
+    private String position;
+    private String commentText;
+    private String commentEmoji;
 }

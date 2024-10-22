@@ -25,8 +25,8 @@ INSERT INTO playlist_tutorials (playlist_id, tutorial_id) VALUES
     (1, 3);  -- Beginner Songs also contains tutorial 3
 
 -- Insert test data into annotations table
-INSERT INTO annotations (tutorial_id, username, annotation_text) VALUES
-    (1, 'user1', 'The chord changes in the chorus are tricky.'),
-    (1, 'user2', 'I recommend using alternate picking here.'),
-    (2, 'user3', 'Pay attention to the finger placement during the intro.'),
-    (3, 'user4', 'Great strumming technique explained! Need more practice on this.');
+-- INSERT INTO annotations (tutorial_id, username, annotation_text) VALUES
+--     (1, 'user1', 'The chord changes in the chorus are tricky.'),
+--     (1, 'user2', 'I recommend using alternate picking here.'),
+--     (2, 'user3', 'Pay attention to the finger placement during the intro.'),
+--     (3, 'user4', 'Great strumming technique explained! Need more practice on this.');

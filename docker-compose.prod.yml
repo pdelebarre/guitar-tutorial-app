@@ -9,6 +9,9 @@ services:
     image: postgres:15-alpine
     container_name: postgres
     environment:
+      POSTGRES_USER: myuser          # Creates the "myuser" role
+      POSTGRES_PASSWORD: mypassword  # Password for "myuser"
+      POSTGRES_DB: guitardb          # Creates the "guitardb" database
       # Set the profile to prod and connect to Postgres
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/guitardb
@@ -21,7 +24,7 @@ services:
     networks:
       - guitartuto-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U myuser"]
+      test: ["CMD-SHELL", "pg_isready -U myuser -d guitardb"]
       interval: 10s
       retries: 5
       start_period: 5s

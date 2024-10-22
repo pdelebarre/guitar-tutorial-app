@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from "axios";
 
@@ -87,3 +88,26 @@ export const getPlaylists = async (): Promise<Playlist[]> => {
 export const createPlaylist = async (name: string): Promise<void> => {
   await api.post("/playlists", { name });
 };
+
+
+// Post a new annotation (highlight)
+export const postAnnotation = async (
+  tutorialId: string,
+  content: any,
+  position: any,
+  comment: { text: string; emoji: string }
+): Promise<void> => {
+  await api.post("/annotations/", {
+    tutorialId,
+    content,
+    position,
+    comment,
+  });
+};
+
+// Delete an annotation by its ID
+export const deleteAnnotation = async (annotationId: string): Promise<void> => {
+  await api.delete(`/annotations/${annotationId}`);
+};
+
+

@@ -6,8 +6,7 @@ import {
   PdfLoader,
   Popup,
   Tip,
-} from "react-pdf-highlighter";
-import type {
+
   Content,
   IHighlight,
   NewHighlight,
@@ -21,7 +20,9 @@ import { testHighlights as _testHighlights } from "./test-highlights";
 import { pdfjs } from "react-pdf";
 import { Box } from "@mui/material";
 
-// Configure the worker path for PDF.js
+import { postAnnotation, deleteAnnotation } from "../../../api/api"; // Import the API function
+
+
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.mjs`;
 
 interface PDFViewerProps {
@@ -51,7 +52,6 @@ const HighlightPopup = ({
   ) : null;
 
 const PDFViewer: React.FC<PDFViewerProps> = ({ tablatureUrl }) => {
-  // const [url, setUrl] = useState(tablatureUrl);
   const [highlights, setHighlights] = useState<Array<IHighlight>>(
     testHighlights[tablatureUrl] ? [...testHighlights[tablatureUrl]] : []
   );
@@ -81,22 +81,35 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ tablatureUrl }) => {
   const getHighlightById = (id: string) =>
     highlights?.find((highlight) => highlight.id === id);
 
-  const addHighlight = (highlight: NewHighlight) => {
-    console.log("Saving highlight", highlight);
-    setHighlights((prevHighlights) => [
-      { ...highlight, id: getNextId() },
-      ...prevHighlights,
-    ]);
-  };
 
-  const updateHighlight = (
+const addHighlight = async (highlight: NewHighlight) => {
+  const newHighlight = { ...highlight, id: getNextId() };
+  console.log("Saving highlight", newHighlight);
+
+  setHighlights((prevHighlights) => [newHighlight, ...prevHighlights]);
+
+  try {
+    await postAnnotation(
+      tablatureUrl, // tutorial ID (assuming tablatureUrl is the ID)
+      highlight.content,
+      highlight.position,
+      highlight.comment
+    );
+    console.log("Highlight saved successfully");
+  } catch (error) {
+    console.error("Error saving highlight", error);
+  }
+};
+
+  const updateHighlight = async (
     highlightId: string,
     position: Partial<ScaledPosition>,
     content: Partial<Content>
   ) => {
     console.log("Updating highlight", highlightId, position, content);
+
     setHighlights((prevHighlights) =>
-      prevHighlights?.map((h) => {
+      prevHighlights.map((h) => {
         const {
           id,
           position: originalPosition,
@@ -113,6 +126,40 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ tablatureUrl }) => {
           : h;
       })
     );
+
+    try {
+      const response = await fetch(`/api/annotations/${highlightId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          position,
+          content,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update highlight");
+      }
+
+      const updatedHighlight = await response.json();
+      console.log("Highlight updated", updatedHighlight);
+    } catch (error) {
+      console.error("Error updating highlight", error);
+    }
+  };
+
+  const removeHighlight = async (highlightId: string) => {
+    try {
+      await deleteAnnotation(highlightId);
+      setHighlights((prevHighlights) =>
+        prevHighlights.filter((h) => h.id !== highlightId)
+      );
+      console.log("Highlight deleted successfully");
+    } catch (error) {
+      console.error("Error deleting highlight", error);
+    }
   };
 
   return (
