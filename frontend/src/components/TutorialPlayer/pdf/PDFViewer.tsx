@@ -20,7 +20,7 @@ import { testHighlights as _testHighlights } from "./test-highlights";
 import { pdfjs } from "react-pdf";
 import { Box } from "@mui/material";
 
-import { postAnnotation, deleteAnnotation } from "../../../api/api"; // Import the API function
+import { postAnnotation } from "../../../api/api"; // Import the API function
 
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.mjs`;
