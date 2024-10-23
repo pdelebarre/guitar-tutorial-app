@@ -29,8 +29,6 @@ services:
     # :${BUILD_ENV:-dev}
     ports:
       - "3000:80"
-    environment:
-      - VITE_API_URL=http://backend:8080/api
     depends_on:
       - backend
     networks:
