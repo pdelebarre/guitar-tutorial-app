@@ -150,17 +150,17 @@ const addHighlight = async (highlight: NewHighlight) => {
     }
   };
 
-  const removeHighlight = async (highlightId: string) => {
-    try {
-      await deleteAnnotation(highlightId);
-      setHighlights((prevHighlights) =>
-        prevHighlights.filter((h) => h.id !== highlightId)
-      );
-      console.log("Highlight deleted successfully");
-    } catch (error) {
-      console.error("Error deleting highlight", error);
-    }
-  };
+  // const removeHighlight = async (highlightId: string) => {
+  //   try {
+  //     await deleteAnnotation(highlightId);
+  //     setHighlights((prevHighlights) =>
+  //       prevHighlights.filter((h) => h.id !== highlightId)
+  //     );
+  //     console.log("Highlight deleted successfully");
+  //   } catch (error) {
+  //     console.error("Error deleting highlight", error);
+  //   }
+  // };
 
   return (
     <Box sx={{ display: "flex", height: "100vh", zIndex: 1 }}>
