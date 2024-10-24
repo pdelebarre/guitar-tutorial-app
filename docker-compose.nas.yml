@@ -1,0 +1,62 @@
+services: 
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+    image: pdelebarre/guitar-tutorial-app-frontend
+    ports:
+      - "3000:80"
+    environment:
+      # Set VITE_API_URL to the internal backend service name inside Docker
+      - VITE_API_URL=http://backend:8080
+    depends_on:
+      - backend
+    networks:
+      - guitartuto-network
+      
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: pdelebarre/guitar-tutorial-app-backend
+    ports:
+      - "8080:8080"
+    environment:
+      TUTORIALS_PATH: /app/tutorials
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/guitardb
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: mypassword
+    volumes:
+      - /volume1/docker/guitar-tutorial/tutorials:/app/tutorials
+    networks:
+      - guitartuto-network
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: guitardb
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - guitartuto-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser -d guitardb"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+
+networks:
+  guitartuto-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

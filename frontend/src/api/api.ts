@@ -4,17 +4,17 @@ import axios from "axios";
 
 import { Comment, Playlist } from "../types/types";
 
-// Get the API URL from the environment variable
-export const apiBaseUrl = import.meta.env.VITE_API_URL;
+// Use environment variables for the baseURL
+const apiURL = import.meta.env.VITE_API_BASE_URL;
+const apiPort = import.meta.env.VITE_API_PORT;
 
 // Check if the environment variable is set correctly
-if (!apiBaseUrl) {
+if (!apiURL || !apiPort) {
   throw new Error("VITE_API_URL is not defined. Check your .env file.");
 }
 
-// Create axios instance with base URL
 const api = axios.create({
-  baseURL: apiBaseUrl,
+  baseURL: `${apiURL}:${apiPort}/api`,
 });
 
 // Debugging the axios instance baseURL

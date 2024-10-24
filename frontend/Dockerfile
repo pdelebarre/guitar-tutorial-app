@@ -22,6 +22,11 @@ FROM nginx:alpine
 # Copy the built files from the previous stage to the NGINX web root
 COPY --from=builder /app/dist /usr/share/nginx/html
 
+#shell to be able to catch variables at docker run time
+#https://dev.to/sanjayttg/dynamic-environment-variables-for-dockerized-react-apps-5bc5
+COPY env.sh /docker-entrypoint.d/env.sh
+RUN chmod +x /docker-entrypoint.d/env.sh
+
 # Expose the port NGINX is running on
 EXPOSE 80
 
