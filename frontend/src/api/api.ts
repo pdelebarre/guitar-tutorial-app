@@ -18,6 +18,8 @@ const api = axios.create({
 });
 
 // Debugging the axios instance baseURL
+console.log("apiURL: ", apiURL);
+console.log("apiPort: ", apiPort);
 console.log("Axios baseURL: ", api.defaults.baseURL);
 
 // Fetch list of file names (tutorials) from the backend
