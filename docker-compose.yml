@@ -26,10 +26,7 @@ services:
     build:
       context: ./frontend
     image: pdelebarre/guitar-tutorial-app-frontend
-    # :${BUILD_ENV:-dev}
-    environment:
-      - GUITARTUTORIALAPP_API_BASE_URL=$GUITARTUTORIALAPP_API_BASE_URL
-      - GUITARTUTORIALAPP_API_PORT=$GUITARTUTORIALAPP_API_PORT
+
     ports:
       - "3000:80"
     depends_on:
