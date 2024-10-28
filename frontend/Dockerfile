@@ -3,6 +3,14 @@ FROM node:18-alpine AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
+# COPY .env .env
+
+# Define build args
+ARG VITE_API_BASE_URL
+ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
+ARG VITE_API_BASE_PORT
+ENV VITE_API_BASE_PORT=${VITE_API_BASE_PORT}
+
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
@@ -26,7 +34,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 #https://dev.to/sanjayttg/dynamic-environment-variables-for-dockerized-react-apps-5bc5
 # COPY env.sh /docker-entrypoint.d/env.sh
 # RUN chmod +x /docker-entrypoint.d/env.sh
-COPY .env .env
+
 
 # Expose the port NGINX is running on
 EXPOSE 80
