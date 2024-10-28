@@ -3,7 +3,6 @@ FROM node:18-alpine AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
-# COPY .env .env
 
 # Define build args
 ARG VITE_API_URL
@@ -11,7 +10,7 @@ ENV VITE_API_URL=${VITE_API_URL}
 ARG VITE_API_PORT
 ENV VITE_API_PORT=${VITE_API_PORT}
 
-
+COPY .env .
 # Copy package.json and package-lock.json
 COPY package*.json ./
 

@@ -8,6 +8,10 @@ import { Comment, Playlist } from "../types/types";
 const apiURL = import.meta.env.VITE_API_URL;
 const apiPort = import.meta.env.VITE_API_PORT;
 
+console.log("VITE_API_URL:", apiURL);
+console.log("VITE_API_PORT:", apiPort);
+
+
 // Check if the environment variable is set correctly
 if (!apiURL || !apiPort) {
   throw new Error("VITE_API_URL is not defined. Check your .env file.");

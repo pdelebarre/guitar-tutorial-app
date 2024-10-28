@@ -4,9 +4,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-      args:
-        VITE_API_URL: http://backend
-        VITE_API_PORT: 8080
+
     image: pdelebarre/guitar-tutorial-app-backend
     # :${BUILD_ENV:-dev}
     ports:
@@ -28,6 +26,9 @@ services:
     container_name: frontend
     build:
       context: ./frontend
+      args:
+        VITE_API_URL: http://backend
+        VITE_API_PORT: 8080
     image: pdelebarre/guitar-tutorial-app-frontend
 
     ports:

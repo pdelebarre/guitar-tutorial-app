@@ -1,5 +1,5 @@
 #!/bin/sh
-for i in $(env | grep GUITARTUTORIALAPP_)
+for i in $(env | grep VITE_API_)
 do
     key=$(echo $i | cut -d '=' -f 1)
     value=$(echo $i | cut -d '=' -f 2-)
