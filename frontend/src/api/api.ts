@@ -1,77 +1,65 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from "axios";
-
 import { Comment, Playlist } from "../types/types";
 
-// Use environment variables for the baseURL
+// Use environment variable for the baseURL
 const apiURL = import.meta.env.VITE_API_URL;
-const apiPort = import.meta.env.VITE_API_PORT;
 
 console.log("VITE_API_URL:", apiURL);
-console.log("VITE_API_PORT:", apiPort);
-
 
 // Check if the environment variable is set correctly
-if (!apiURL || !apiPort) {
+if (!apiURL) {
   throw new Error("VITE_API_URL is not defined. Check your .env file.");
 }
 
+// Create axios instance with simplified baseURL
 const api = axios.create({
-  baseURL: `${apiURL}:${apiPort}/api`,
+  baseURL: `${apiURL}/api`, // Proxy will route to backend on port 80
 });
 
 // Debugging the axios instance baseURL
-console.log("apiURL: ", apiURL);
-console.log("apiPort: ", apiPort);
-console.log("Axios baseURL: ", api.defaults.baseURL);
+console.log("Axios baseURL:", api.defaults.baseURL);
 
 // Fetch list of file names (tutorials) from the backend
 export const getTutorials = async (): Promise<string[]> => {
-  console.log("API base URL being used: ", api.defaults.baseURL);
   const response = await api.get("/tutorials/");
   return response.data;
 };
 
 // Utility function to URL-encode the file name
-const encodeFileName = (fileName: string) => {
-  return encodeURIComponent(fileName);
-};
+const encodeFileName = (fileName: string) => encodeURIComponent(fileName);
 
 // Fetch MP4 file URL
-export const getVideoUrl = async (fileName: string): Promise<string> => {
-  const encodedFileName = encodeFileName(fileName); // Encode the file name
-  return `${api.defaults.baseURL}/tutorials/${encodedFileName}/mp4`;  // API path for video file
+export const getVideoUrl = (fileName: string): string => {
+  return `${api.defaults.baseURL}/tutorials/${encodeFileName(fileName)}/mp4`;
 };
 
 // Fetch SRT file URL
-export const getSubtitleUrl = async (fileName: string): Promise<string | null> => {
+export const getSubtitleUrl = async (
+  fileName: string
+): Promise<string | null> => {
   try {
-    const encodedFileName = encodeFileName(fileName); // Encode the file name
-    // const response =
-      // await axios.get(`/tutorials/${encodedFileName}/srt`, { responseType: 'blob' });
-    return `${api.defaults.baseURL}/tutorials/${encodedFileName}/srt`;  // Return the subtitle URL
+    return `${api.defaults.baseURL}/tutorials/${encodeFileName(fileName)}/srt`;
   } catch (error) {
-    console.error('Subtitle file not found:', error);
+    console.error("Subtitle file not found:", error);
     return null;
   }
 };
 
 // Fetch PDF tablature URL
-export const getTablatureUrl = async (fileName: string): Promise<string | null> => {
+export const getTablatureUrl = async (
+  fileName: string
+): Promise<string | null> => {
   try {
-    const encodedFileName = encodeFileName(fileName); // Encode the file name
-    // const response =
-      // await axios.get(`/tutorials/${encodedFileName}/pdf`, { responseType: 'blob' });
-    return `${api.defaults.baseURL}/tutorials/${encodedFileName}/pdf`;  // Return the tablature URL
+    return `${api.defaults.baseURL}/tutorials/${encodeFileName(fileName)}/pdf`;
   } catch (error) {
-    console.error('Tablature file not found:', error);
+    console.error("Tablature file not found:", error);
     return null;
   }
 };
+
 // Fetch comments for a specific tutorial
 export const getComments = async (tutorialId: number): Promise<Comment[]> => {
-  console.log("API base URL being used: ", api.defaults.baseURL);
   const response = await api.get(`/comments/tutorial/${tutorialId}`);
   return response.data;
 };
@@ -95,7 +83,6 @@ export const createPlaylist = async (name: string): Promise<void> => {
   await api.post("/playlists", { name });
 };
 
-
 // Post a new annotation (highlight)
 export const postAnnotation = async (
   tutorialId: string,
@@ -115,5 +102,3 @@ export const postAnnotation = async (
 export const deleteAnnotation = async (annotationId: string): Promise<void> => {
   await api.delete(`/annotations/${annotationId}`);
 };
-
-
