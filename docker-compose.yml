@@ -5,8 +5,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
       args:
-        VITE_API_BASE_PURL: http://backend
-        VITE_API_BASE_PORT: 8080
+        VITE_API_URL: http://backend
+        VITE_API_PORT: 8080
     image: pdelebarre/guitar-tutorial-app-backend
     # :${BUILD_ENV:-dev}
     ports:

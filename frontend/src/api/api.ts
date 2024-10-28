@@ -5,7 +5,7 @@ import axios from "axios";
 import { Comment, Playlist } from "../types/types";
 
 // Use environment variables for the baseURL
-const apiURL = import.meta.env.VITE_API_BASE_URL;
+const apiURL = import.meta.env.VITE_API_URL;
 const apiPort = import.meta.env.VITE_API_PORT;
 
 // Check if the environment variable is set correctly
