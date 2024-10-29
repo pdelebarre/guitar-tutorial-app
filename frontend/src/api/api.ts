@@ -13,16 +13,16 @@ import { Comment, Playlist } from "../types/types";
 // }
 
 // Create axios instance with simplified baseURL
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "/api" // Proxy will route to backend on port 80
-});
+// const api = axios.create({
+//   baseURL: import.meta.env.VITE_API_BASE_URL || "/api" // Proxy will route to backend on port 80
+// });
 
 // Debugging the axios instance baseURL
-console.log("Axios baseURL:", api.defaults.baseURL);
+// console.log("Axios baseURL:", api.defaults.baseURL);
 
 // Fetch list of file names (tutorials) from the backend
 export const getTutorials = async (): Promise<string[]> => {
-  const response = await api.get("/tutorials/");
+  const response = await axios.get("/tutorials/");
   return response.data;
 };
 
@@ -31,7 +31,7 @@ const encodeFileName = (fileName: string) => encodeURIComponent(fileName);
 
 // Fetch MP4 file URL
 export const getVideoUrl = (fileName: string): string => {
-  return `${api.defaults.baseURL}/tutorials/${encodeFileName(fileName)}/mp4`;
+  return `/tutorials/${encodeFileName(fileName)}/mp4`;
 };
 
 // Fetch SRT file URL
@@ -39,7 +39,9 @@ export const getSubtitleUrl = async (
   fileName: string
 ): Promise<string | null> => {
   try {
-    return `${api.defaults.baseURL}/tutorials/${encodeFileName(fileName)}/srt`;
+    return `/tutorials/${encodeFileName(
+      fileName
+    )}/srt`;
   } catch (error) {
     console.error("Subtitle file not found:", error);
     return null;
@@ -51,7 +53,7 @@ export const getTablatureUrl = async (
   fileName: string
 ): Promise<string | null> => {
   try {
-    return `${api.defaults.baseURL}/tutorials/${encodeFileName(fileName)}/pdf`;
+    return `/tutorials/${encodeFileName(fileName)}/pdf`;
   } catch (error) {
     console.error("Tablature file not found:", error);
     return null;
@@ -60,7 +62,7 @@ export const getTablatureUrl = async (
 
 // Fetch comments for a specific tutorial
 export const getComments = async (tutorialId: number): Promise<Comment[]> => {
-  const response = await api.get(`/comments/tutorial/${tutorialId}`);
+  const response = await axios.get(`/comments/tutorial/${tutorialId}`);
   return response.data;
 };
 
@@ -69,18 +71,18 @@ export const postComment = async (
   tutorialId: number,
   text: string
 ): Promise<void> => {
-  await api.post("/comments", { tutorialId, text });
+  await axios.post("/comments", { tutorialId, text });
 };
 
 // Fetch all playlists
 export const getPlaylists = async (): Promise<Playlist[]> => {
-  const response = await api.get("/playlists");
+  const response = await axios.get("/playlists");
   return response.data;
 };
 
 // Create a new playlist
 export const createPlaylist = async (name: string): Promise<void> => {
-  await api.post("/playlists", { name });
+  await axios.post("/playlists", { name });
 };
 
 // Post a new annotation (highlight)
@@ -90,7 +92,7 @@ export const postAnnotation = async (
   position: any,
   comment: { text: string; emoji: string }
 ): Promise<void> => {
-  await api.post("/annotations/", {
+  await axios.post("/annotations/", {
     tutorialId,
     content,
     position,
@@ -100,5 +102,5 @@ export const postAnnotation = async (
 
 // Delete an annotation by its ID
 export const deleteAnnotation = async (annotationId: string): Promise<void> => {
-  await api.delete(`/annotations/${annotationId}`);
+  await axios.delete(`/annotations/${annotationId}`);
 };
