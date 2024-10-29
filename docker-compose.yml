@@ -31,14 +31,10 @@ services:
   frontend:
     image: pdelebarre/guitar-tutorial-app-frontend
     container_name: frontend
-    # environment:
-    #   TUTO_API_URL: http://nginx
-    #   TUTO_API_PORT: 8080
+    environment:
+      TUTO_API_URL: http://nginx/api  # Set API URL to go through Nginx
     ports:
-      - "3000:80"
-    depends_on:
-      - backend
-      - nginx
+      - "3000:80"  # Uncomment if you want direct access to frontend on port 3000
     networks:
       - guitartuto-network
 
