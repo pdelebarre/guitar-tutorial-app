@@ -9,8 +9,8 @@ services:
       - "3050:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-    networks:
-      - guitartuto-network
+    # networks:
+    #   - guitartuto-network
     depends_on:
       - backend
       - frontend
@@ -25,20 +25,21 @@ services:
       SPRING_PROFILES_ACTIVE: dev
     volumes:
       - /Volumes/LaCie/dev/guitar-tutorial-app/tutorials:/app/tutorials
-    networks:
-      - guitartuto-network
+    # networks:
+    #   - guitartuto-network
     restart: unless-stopped
 
   frontend:
+    stdin_open: true
     image: pdelebarre/guitar-tutorial-app-frontend
     container_name: frontend
-    environment:
-      TUTO_API_URL: http://nginx/api  # Set API URL to go through Nginx
+    # environment:
+    #   TUTO_API_URL: http://nginx/api  # Set API URL to go through Nginx
     # ports:
     #   - "3000:80"  # Uncomment if you want direct access to frontend on port 3000
-    networks:
-      - guitartuto-network
+    # networks:
+    #   - guitartuto-network
 
-networks:
-  guitartuto-network:
-    driver: bridge
+# networks:
+#   guitartuto-network:
+#     driver: bridge

@@ -22,7 +22,7 @@ import { Comment, Playlist } from "../types/types";
 
 // Fetch list of file names (tutorials) from the backend
 export const getTutorials = async (): Promise<string[]> => {
-  const response = await axios.get("/tutorials/");
+  const response = await axios.get("/api/tutorials/");
   return response.data;
 };
 
@@ -62,7 +62,7 @@ export const getTablatureUrl = async (
 
 // Fetch comments for a specific tutorial
 export const getComments = async (tutorialId: number): Promise<Comment[]> => {
-  const response = await axios.get(`/comments/tutorial/${tutorialId}`);
+  const response = await axios.get(`/api/comments/tutorial/${tutorialId}`);
   return response.data;
 };
 
@@ -71,18 +71,18 @@ export const postComment = async (
   tutorialId: number,
   text: string
 ): Promise<void> => {
-  await axios.post("/comments", { tutorialId, text });
+  await axios.post("/api/comments", { tutorialId, text });
 };
 
 // Fetch all playlists
 export const getPlaylists = async (): Promise<Playlist[]> => {
-  const response = await axios.get("/playlists");
+  const response = await axios.get("/api/playlists");
   return response.data;
 };
 
 // Create a new playlist
 export const createPlaylist = async (name: string): Promise<void> => {
-  await axios.post("/playlists", { name });
+  await axios.post("/api/playlists", { name });
 };
 
 // Post a new annotation (highlight)
@@ -92,7 +92,7 @@ export const postAnnotation = async (
   position: any,
   comment: { text: string; emoji: string }
 ): Promise<void> => {
-  await axios.post("/annotations/", {
+  await axios.post("/api/annotations/", {
     tutorialId,
     content,
     position,
@@ -102,5 +102,5 @@ export const postAnnotation = async (
 
 // Delete an annotation by its ID
 export const deleteAnnotation = async (annotationId: string): Promise<void> => {
-  await axios.delete(`/annotations/${annotationId}`);
+  await axios.delete(`/api/annotations/${annotationId}`);
 };
