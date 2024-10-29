@@ -33,8 +33,8 @@ services:
     container_name: frontend
     environment:
       TUTO_API_URL: http://nginx/api  # Set API URL to go through Nginx
-    ports:
-      - "3000:80"  # Uncomment if you want direct access to frontend on port 3000
+    # ports:
+      # - "3000:80"  # Uncomment if you want direct access to frontend on port 3000
     networks:
       - guitartuto-network
 
