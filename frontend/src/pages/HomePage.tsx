@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -14,7 +15,8 @@ const HomePage: React.FC = () => {
   const [tutorials, setTutorials] = useState<string[]>([]);
 
   useEffect(() => {
-    getTutorials().then((data) => setTutorials(data));
+    getTutorials().then((data) =>
+      setTutorials(data));
   }, []);
 
   return (
@@ -34,7 +36,6 @@ const HomePage: React.FC = () => {
               primary={tutorial.replace(".mp4", "")}
             />
             </ListItem>
-            
             
         ))}
       </List>

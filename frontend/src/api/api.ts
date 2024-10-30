@@ -13,17 +13,25 @@ import { Comment, Playlist } from "../types/types";
 // }
 
 // Create axios instance with simplified baseURL
-// const api = axios.create({
-//   baseURL: import.meta.env.VITE_API_BASE_URL || "/api" // Proxy will route to backend on port 80
-// });
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || "/api" // Proxy will route to backend on port 80
+});
+
 
 // Debugging the axios instance baseURL
-// console.log("Axios baseURL:", api.defaults.baseURL);
+console.log("Axios baseURL:", api.defaults.baseURL);
 
 // Fetch list of file names (tutorials) from the backend
 export const getTutorials = async (): Promise<string[]> => {
-  const response = await axios.get("/api/tutorials/");
-  return response.data;
+  try {
+    const response = await api.get("/api/tutorials/");
+    return response.data;
+
+  }
+  catch (error) {
+    console.error("Error retrieving Tutorials ToC:", error);
+    return [];
+  }
 };
 
 // Utility function to URL-encode the file name
@@ -62,7 +70,7 @@ export const getTablatureUrl = async (
 
 // Fetch comments for a specific tutorial
 export const getComments = async (tutorialId: number): Promise<Comment[]> => {
-  const response = await axios.get(`/api/comments/tutorial/${tutorialId}`);
+  const response = await api.get(`/api/comments/tutorial/${tutorialId}`);
   return response.data;
 };
 
@@ -71,18 +79,18 @@ export const postComment = async (
   tutorialId: number,
   text: string
 ): Promise<void> => {
-  await axios.post("/api/comments", { tutorialId, text });
+  await api.post("/api/comments", { tutorialId, text });
 };
 
 // Fetch all playlists
 export const getPlaylists = async (): Promise<Playlist[]> => {
-  const response = await axios.get("/api/playlists");
+  const response = await api.get("/api/playlists");
   return response.data;
 };
 
 // Create a new playlist
 export const createPlaylist = async (name: string): Promise<void> => {
-  await axios.post("/api/playlists", { name });
+  await api.post("/api/playlists", { name });
 };
 
 // Post a new annotation (highlight)
@@ -92,7 +100,7 @@ export const postAnnotation = async (
   position: any,
   comment: { text: string; emoji: string }
 ): Promise<void> => {
-  await axios.post("/api/annotations/", {
+  await api.post("/api/annotations/", {
     tutorialId,
     content,
     position,
@@ -102,5 +110,5 @@ export const postAnnotation = async (
 
 // Delete an annotation by its ID
 export const deleteAnnotation = async (annotationId: string): Promise<void> => {
-  await axios.delete(`/api/annotations/${annotationId}`);
+  await api.delete(`/api/annotations/${annotationId}`);
 };
