@@ -14,7 +14,7 @@ import { Comment, Playlist } from "../types/types";
 
 // Create axios instance with simplified baseURL
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "/api" // Proxy will route to backend on port 80
+  baseURL: import.meta.env.VITE_API_URL || "" // Proxy will route to backend on port 80
 });
 
 
