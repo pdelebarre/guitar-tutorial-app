@@ -13,7 +13,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl, subtitleUrl }) => {
   return (
     <Box mb={2}>
       <ReactPlayer
-        url={videoUrl ?? ""}
+        url=  {videoUrl ?? ""}
         controls
         width="100%"
         height="auto"

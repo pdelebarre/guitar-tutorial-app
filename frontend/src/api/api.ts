@@ -2,19 +2,9 @@
 import axios from "axios";
 import { Comment, Playlist } from "../types/types";
 
-// Use environment variable for the baseURL
-// const apiURL = import.meta.env.VITE_API_URL;
-
-// console.log("VITE_API_URL:", apiURL);
-
-// Check if the environment variable is set correctly
-// if (!apiURL) {
-//   throw new Error("VITE_API_URL is not defined. Check your .env file.");
-// }
-
 // Create axios instance with simplified baseURL
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "" // Proxy will route to backend on port 80
+  baseURL: import.meta.env.VITE_API_URL || "" // to manage dev (var in .env.development) vs prod
 });
 
 
@@ -39,7 +29,7 @@ const encodeFileName = (fileName: string) => encodeURIComponent(fileName);
 
 // Fetch MP4 file URL
 export const getVideoUrl = (fileName: string): string => {
-  return `/tutorials/${encodeFileName(fileName)}/mp4`;
+  return `${api.defaults.baseURL}/api/tutorials/${encodeFileName(fileName)}/mp4`;
 };
 
 // Fetch SRT file URL
@@ -47,7 +37,7 @@ export const getSubtitleUrl = async (
   fileName: string
 ): Promise<string | null> => {
   try {
-    return `/tutorials/${encodeFileName(
+    return `${api.defaults.baseURL}/api/tutorials/${encodeFileName(
       fileName
     )}/srt`;
   } catch (error) {

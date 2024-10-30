@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState, useRef } from "react";
 import { Box, Typography, IconButton } from "@mui/material";
 import { getVideoUrl, getSubtitleUrl, getTablatureUrl } from "../../api/api";
@@ -25,6 +26,8 @@ const TutorialPlayer: React.FC<TutorialPlayerProps> = ({ fileName }) => {
       const video = await getVideoUrl(fileName);
       const subtitle = await getSubtitleUrl(fileName);
       const tablature = await getTablatureUrl(fileName);
+
+      console.log(video, subtitle, tablature);
 
       setVideoUrl(video);
       setSubtitleUrl(subtitle);
