@@ -51,7 +51,7 @@ export const getTablatureUrl = async (
   fileName: string
 ): Promise<string | null> => {
   try {
-    return `/tutorials/${encodeFileName(fileName)}/pdf`;
+    return `${api.defaults.baseURL}/api/tutorials/${encodeFileName(fileName)}/pdf`;
   } catch (error) {
     console.error("Tablature file not found:", error);
     return null;
