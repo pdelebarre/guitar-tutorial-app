@@ -26,11 +26,11 @@ public class VideoStreamingService {
     private static final int BUFFER_SIZE = 1024 * 16; // 16KB chunks
 
     // Method to stream video files by song ID with range request support
-    public ResponseEntity<Resource> streamVideo(Long songId, HttpServletRequest request, String tutorialsDirectory)
+    public ResponseEntity<Resource> streamVideo(String song, HttpServletRequest request, String tutorialsDirectory)
             throws IOException {
         // Locate the video file for the given song ID in the external tutorials
         // directory
-        Path videoPath = Paths.get(tutorialsDirectory).resolve("song" + songId + "/video.mp4");
+        Path videoPath = Paths.get(tutorialsDirectory).resolve(song+".mp4");
 
         // Check if the file exists
         if (!Files.exists(videoPath)) {

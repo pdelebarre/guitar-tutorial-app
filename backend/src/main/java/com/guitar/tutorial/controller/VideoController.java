@@ -30,9 +30,9 @@ public class VideoController {
     private String tutorialsDirectory;
 
     // Endpoint to stream video files for a specific video (based on song ID)
-    @GetMapping("/{id}/stream")
-    public ResponseEntity<Resource> streamVideo(@PathVariable Long id, HttpServletRequest request) throws IOException {
+    @GetMapping("/{song}/stream")
+    public ResponseEntity<Resource> streamVideo(@PathVariable String song, HttpServletRequest request) throws IOException {
         // Call the VideoStreamingService to handle the video streaming logic
-        return videoStreamingService.streamVideo(id, request, tutorialsDirectory);
+        return videoStreamingService.streamVideo(song, request, tutorialsDirectory);
     }
 }

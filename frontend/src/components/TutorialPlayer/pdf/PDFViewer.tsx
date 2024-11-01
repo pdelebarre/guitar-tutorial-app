@@ -163,7 +163,7 @@ const addHighlight = async (highlight: NewHighlight) => {
   // };
 
   return (
-    <Box sx={{ display: "flex", height: "100vh", zIndex: 1 }}>
+    <Box sx={{ display: "flex", height: "100vh", zIndex: 0 }}>
       {/* Sidebar */}
       <Sidebar
         highlights={highlights}

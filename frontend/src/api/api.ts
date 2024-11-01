@@ -28,9 +28,22 @@ export const getTutorials = async (): Promise<string[]> => {
 const encodeFileName = (fileName: string) => encodeURIComponent(fileName);
 
 // Fetch MP4 file URL
-export const getVideoUrl = (fileName: string): string => {
-  return `${api.defaults.baseURL}/api/tutorials/${encodeFileName(fileName)}/mp4`;
-};
+// 
+// export const getVideoUrl = (fileName: string): string => {
+//   return `${api.defaults.baseURL}/api/tutorials/${encodeFileName(fileName)}/mp4`;
+// };
+export const getVideoUrl = async (fileName: string): Promise<string | null> => {
+  try {
+    const response = await api.get(
+      `/api/videos/${encodeURIComponent(fileName)}/stream`,
+      { responseType: "blob" }
+    );
+    return URL.createObjectURL(response.data); // Stream response as Blob
+  } catch (error) {
+    console.error("Error streaming video:", error);
+    return null;
+  }
+};  
 
 // Fetch SRT file URL
 export const getSubtitleUrl = async (

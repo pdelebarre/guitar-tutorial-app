@@ -9,6 +9,7 @@ import { ResizableBox } from "react-resizable";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import CloseIcon from "@mui/icons-material/Close";
 import "react-resizable/css/styles.css"; // Ensure styles are imported for resizing
+import PDFAnnotator from "./openai/PDFAnnotator";
 
 interface TutorialPlayerProps {
   fileName: string;
@@ -49,9 +50,22 @@ const TutorialPlayer: React.FC<TutorialPlayerProps> = ({ fileName }) => {
 
   return (
     <Box sx={{ position: "relative", height: "100vh" }}>
-      <Typography variant="h5" gutterBottom>
-        Video Tutorial for {fileName}
-      </Typography>
+      {/* Tablature Viewer */}
+      {tablatureUrl && (
+        <Box
+          sx={{
+            height: "100vh",
+            width: "75vw",
+            position: "absolute", // Ensure that it’s absolutely positioned
+            zIndex: 0, // Keep tablature behind video player
+            overflow: "auto", // Handle scrolling of PDF
+            top: 0,
+            left: 0, // Anchor to the top-left corner
+          }}
+        >
+          <PDFAnnotator pdfFile={tablatureUrl} />
+        </Box>
+      )}
 
       {/* Draggable and resizable video player */}
       {isVideoVisible && (
@@ -61,6 +75,7 @@ const TutorialPlayer: React.FC<TutorialPlayerProps> = ({ fileName }) => {
             height={300}
             minConstraints={[200, 150]}
             maxConstraints={[800, 600]}
+            // Important: adjust layout according to where you want to place the video container
             className="draggable-video"
           >
             <Box
@@ -72,23 +87,22 @@ const TutorialPlayer: React.FC<TutorialPlayerProps> = ({ fileName }) => {
                 height: "300px",
                 backgroundColor: "white",
                 border: "1px solid #ccc",
-                zIndex: 1000, // Ensure video is on top
+                zIndex: 100, // Ensure video is on top
                 boxShadow: "0px 4px 12px rgba(0,0,0,0.3)",
               }}
               ref={videoPlayerRef}
             >
               <VideoPlayer videoUrl={videoUrl} subtitleUrl={subtitleUrl} />
-
-              {/* Control buttons */}
+              {/* Video Control Buttons */}
               <IconButton
                 onClick={handleFullScreen}
-                style={{ position: "absolute", top: 8, right: 40, zIndex: 10 }}
+                style={{ position: "absolute", top: 8, right: 40 }}
               >
                 <FullscreenIcon />
               </IconButton>
               <IconButton
                 onClick={() => setIsVideoVisible(false)}
-                style={{ position: "absolute", top: 8, right: 8, zIndex: 10 }}
+                style={{ position: "absolute", top: 8, right: 8 }}
               >
                 <CloseIcon />
               </IconButton>
@@ -97,20 +111,7 @@ const TutorialPlayer: React.FC<TutorialPlayerProps> = ({ fileName }) => {
         </Draggable>
       )}
 
-      {/* Tablature Viewer */}
-      {tablatureUrl && (
-        <Box
-          sx={{
-            height: "100vh",
-            width: "75vw",
-            position: "absolute", // Position relative to parent
-            zIndex: 1, // Keep tablature behind video player
-            overflow: "auto", // To handle scrolling of PDF
-          }}
-        >
-          <PDFViewer tablatureUrl={tablatureUrl} />
-        </Box>
-      )}
+      {/* Rest of the component code remains as is */}
 
       {/* Show video button if hidden */}
       {!isVideoVisible && (
