@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState, useRef } from "react";
-import { Box, Typography, IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { getVideoUrl, getSubtitleUrl, getTablatureUrl } from "../../api/api";
 import VideoPlayer from "./VideoPlayer";
-import PDFViewer from "./pdf/PDFViewer";
 import Draggable from "react-draggable";
 import { ResizableBox } from "react-resizable";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
