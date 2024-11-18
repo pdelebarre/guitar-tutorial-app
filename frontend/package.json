@@ -12,13 +12,14 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
-    "@mui/icons-material": "^6.1.6",
-    "@mui/material": "^6.1.5",
-    "@react-pdf/renderer": "^4.0.0",
+    "@mui/icons-material": "^6.1.7",
+    "@mui/material": "^6.1.7",
+    "@react-pdf/renderer": "^4.1.4",
     "axios": "^1.7.7",
     "file-saver": "^2.0.5",
+    "framer-motion": "^11.11.17",
     "pdf-lib": "^1.17.1",
-    "pdfjs-dist": "^4.7.76",
+    "pdfjs-dist": "^4.8.69",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-draggable": "^4.4.6",
@@ -26,21 +27,21 @@
     "react-pdf-highlighter": "^8.0.0-rc.0",
     "react-player": "^2.16.0",
     "react-resizable": "^3.0.5",
-    "react-router-dom": "^6.27.0"
+    "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.13.0",
+    "@eslint/js": "^9.15.0",
     "@types/file-saver": "^2.0.7",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@types/react-resizable": "^3.0.8",
     "@vitejs/plugin-react": "^4.3.3",
-    "eslint": "^9.13.0",
+    "eslint": "^9.15.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
-    "globals": "^15.11.0",
+    "globals": "^15.12.0",
     "typescript": "^5.6.3",
-    "typescript-eslint": "^8.12.2",
-    "vite": "^5.4.10"
+    "typescript-eslint": "^8.14.0",
+    "vite": "^5.4.11"
   }
 }

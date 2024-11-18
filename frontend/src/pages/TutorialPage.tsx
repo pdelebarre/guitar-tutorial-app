@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { Container, Typography, Box } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import TutorialPlayer from "../components/TutorialPlayer/TutorialPlayer";
 // import { apiBaseUrl } from "../api/api";
 const TutorialPage: React.FC = () => {
@@ -12,11 +12,10 @@ const TutorialPage: React.FC = () => {
         {fileName}
       </Typography>
 
-      <Box mb={2}>
         <TutorialPlayer
           fileName={`${fileName}`}
        />
-      </Box>
+  
     </Container>
   );
 };
