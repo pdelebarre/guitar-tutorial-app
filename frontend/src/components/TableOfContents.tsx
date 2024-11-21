@@ -6,15 +6,29 @@ import {
   ListItemText,
   Typography,
   Box,
+  CircularProgress,
+  Alert,
 } from "@mui/material";
 import { getTutorials } from "../api/api"; // API call to fetch file names
 
 const TutorialTableOfContents: React.FC = () => {
   const [tutorials, setTutorials] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Fetch tutorials (file names) on component mount
   useEffect(() => {
-    getTutorials().then((data) => setTutorials(data));
+    setLoading(true);
+    getTutorials()
+      .then((data) => {
+        setTutorials(data);
+        setError(null);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch tutorials:", err);
+        setError("Unable to load tutorials. Please try again later.");
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -23,9 +37,13 @@ const TutorialTableOfContents: React.FC = () => {
         Guitar Tutorials
       </Typography>
 
-      <List>
-        {tutorials.length > 0 ? (
-          tutorials.map((tutorialName) => (
+      {loading ? (
+        <CircularProgress />
+      ) : error ? (
+        <Alert severity="error">{error}</Alert>
+      ) : tutorials.length > 0 ? (
+        <List>
+          {tutorials.map((tutorialName) => (
             <ListItemButton
               component={RouterLink}
               to={`/tutorial/${tutorialName}`} // Link to the tutorial page by file name
@@ -33,11 +51,11 @@ const TutorialTableOfContents: React.FC = () => {
             >
               <ListItemText primary={tutorialName} />
             </ListItemButton>
-          ))
-        ) : (
-          <Typography>No tutorials available</Typography>
-        )}
-      </List>
+          ))}
+        </List>
+      ) : (
+        <Typography>No tutorials available</Typography>
+      )}
     </Box>
   );
 };

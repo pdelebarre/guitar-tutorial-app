@@ -1,15 +1,16 @@
 package com.guitar.tutorial.controller;
 
-import java.nio.file.Files;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.stream.Collectors;
-
+import java.util.List;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,63 +20,58 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.guitar.tutorial.service.TutorialService;
+
 @RestController
 @RequestMapping("/api/tutorials")
+@Tag(name = "Tutorials API", description = "API to manage and retrieve guitar tutorial files.")
 public class TutorialController {
+
     private static final Logger logger = LoggerFactory.getLogger(TutorialController.class);
 
     @Value("${tutorials.path}")
-    private String tutorialsDirectory; // Injected path from application.yml or .env
+    private String tutorialsDirectory;
 
-    @GetMapping("/test")
-    @CrossOrigin
-    public String testEndpoint() {
-        logger.info("Test endpoint called"); // Debug log
-        return tutorialsDirectory;
+    @Value("${tutorials.supported-extensions:mp4,pdf,srt}")
+    private List<String> supportedExtensions;
+
+    private final TutorialService tutorialService;
+
+    public TutorialController(TutorialService tutorialService) {
+        this.tutorialService = tutorialService;
     }
 
-    // Serve specific files (video, pdf, srt) based on file name and extension
-    @GetMapping("/{fileName}/{extension}")
+    @Operation(summary = "List Available Tutorials")
+    @GetMapping("/")
     @CrossOrigin
-    public ResponseEntity<Resource> getFile(@PathVariable String fileName, @PathVariable String extension) {
+    public ResponseEntity<List<String>> listTutorials() {
         try {
-            // Create the file path using the injected tutorialsDirectory and file name
-            Path filePath = Paths.get(tutorialsDirectory).resolve(fileName + "." + extension);
-            logger.info("Fetching file from path: {}", filePath.toString()); // Replaced System.out with logger
-
-            Resource resource = new UrlResource(filePath.toUri());
-
-            if (resource.exists() && resource.isReadable()) {
-                HttpHeaders headers = new HttpHeaders();
-                headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"");
-                logger.info("File found and is readable: {}", resource.getFilename());
-                return new ResponseEntity<>(resource, headers, HttpStatus.OK);
-            } else {
-                logger.warn("File not found or is not readable: {}", filePath.toString());
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            }
-        } catch (Exception e) {
-            logger.error("Error occurred while fetching the file: {}", e.getMessage(), e);
+            Path tutorialsPath = Paths.get(tutorialsDirectory).normalize();
+            List<String> tutorials = tutorialService.listTutorials(tutorialsPath, supportedExtensions);
+            return ResponseEntity.ok(tutorials);
+        } catch (FileNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (IOException e) {
+            logger.error("Error listing tutorials: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    // List all available tutorial file names (without extensions)
-    @GetMapping("/")
+    @Operation(summary = "Fetch Tutorial File")
+    @GetMapping("/{fileName}/{extension}")
     @CrossOrigin
-    public ResponseEntity<?> listTutorials() {
+    public ResponseEntity<Resource> getFile(@PathVariable String fileName, @PathVariable String extension) {
         try {
-            Path tutorialsPath = Paths.get(tutorialsDirectory);
-            logger.info("Listing tutorials in directory: {}", tutorialsPath.toString());
+            Path tutorialsPath = Paths.get(tutorialsDirectory).normalize();
+            Resource resource = tutorialService.getFile(tutorialsPath, fileName, extension);
 
-            return ResponseEntity.ok(
-                    Files.list(tutorialsPath)
-                            .filter(Files::isRegularFile)
-                            .map(file -> file.getFileName().toString().replaceAll("\\.(mp4|pdf|srt)$", ""))
-                            .distinct()
-                            .collect(Collectors.toList()));
-        } catch (Exception e) {
-            logger.error("Error occurred while listing tutorial files: {}", e.getMessage(), e);
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"");
+            return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+        } catch (FileNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (IOException e) {
+            logger.error("Error fetching file: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
