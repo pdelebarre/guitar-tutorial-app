@@ -1,5 +1,7 @@
 package com.guitar.tutorial.service;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,7 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-
+import org.apache.tika.Tika;
+import org.apache.tika.metadata.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -43,6 +46,23 @@ public class TutorialService {
             logger.warn("File not found or not readable: {}", filePath);
             throw new FileNotFoundException("File not found");
         }
+    }
+        public long getVideoDuration(File file) {
+        Tika tika = new Tika();
+        Metadata metadata = new Metadata();
+
+        try (FileInputStream inputStream = new FileInputStream(file)) {
+            tika.parse(inputStream, metadata);
+            String duration = metadata.get("xmpDM:duration"); // Duration in milliseconds
+            if (duration != null) {
+                return Long.parseLong(duration) / 1000; // Convert to seconds
+            }
+        } catch (Exception e) {
+            // Log error and return 0 for missing duration
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 
     public boolean hasSupportedExtension(String fileName, List<String> supportedExtensions) {

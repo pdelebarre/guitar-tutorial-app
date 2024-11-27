@@ -6,8 +6,8 @@ import HomePage from "./pages/HomePage";
 import TutorialPage from "./pages/TutorialPage";
 import PlaylistPage from "./pages/PlaylistPage";
 import Preferences from "./components/Preferences";
-import ResponsiveNavbar from "./components/ResponsiveNavbar";
 import TableOfContents from "./components/TableOfContents";
+import Navigation from "./components/Navigation";
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = React.useState(false);
@@ -21,7 +21,8 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <ResponsiveNavbar setDarkMode={setDarkMode} darkMode={darkMode} />
+      {/* <ResponsiveNavbar setDarkMode={setDarkMode} darkMode={darkMode} /> */}
+      <Navigation />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/tutorials" element={<TableOfContents />} />
@@ -30,7 +31,7 @@ const App: React.FC = () => {
         <Route
           path="/preferences"
           element={<Preferences setDarkMode={setDarkMode} />}
-        />
+        /> 
       </Routes>
     </ThemeProvider>
   );

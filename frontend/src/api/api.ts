@@ -12,17 +12,37 @@ const api = axios.create({
 console.log("Axios baseURL:", api.defaults.baseURL);
 
 // Fetch list of file names (tutorials) from the backend
-export const getTutorials = async (): Promise<string[]> => {
-  try {
-    const response = await api.get("/api/tutorials/");
-    return response.data;
 
-  }
-  catch (error) {
-    console.error("Error retrieving Tutorials ToC:", error);
-    return [];
+export interface TutorialDTO {
+  name: string; // Name of the tutorial
+  type: string; // File type (e.g., mp4, pdf)
+  size: number; // File size in bytes
+  duration: number; // Duration in seconds, or 0 if not applicable
+}
+
+/**
+ * Fetch the list of tutorials from the backend.
+ * @returns {Promise<TutorialDTO[]>} A promise that resolves to an array of TutorialDTO objects.
+ */
+export const getTutorials = async (): Promise<TutorialDTO[]> => {
+  try {
+    const response = await api.get<TutorialDTO[]>("/api/tutorials/");
+    // console.log('response :>> ', response);
+
+    // Ensure all tutorials have the expected structure
+    return response.data.map((tutorial) => ({
+      name: tutorial.name || "Untitled",
+      type: tutorial.type || "unknown",
+      size: tutorial.size || 0,
+      duration: tutorial.duration || 0,
+    }));
+  } catch (error) {
+    console.error("Error fetching tutorials:", error);
+    throw new Error("Unable to fetch tutorials. Please try again later.");
   }
 };
+
+
 
 // Utility function to URL-encode the file name
 const encodeFileName = (fileName: string) => encodeURIComponent(fileName);
