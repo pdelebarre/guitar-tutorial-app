@@ -36,6 +36,9 @@ public class TutorialService {
     }
 
     public Resource getFile(Path tutorialsPath, String fileName, String extension) throws IOException {
+        if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
+            throw new IllegalArgumentException("Invalid file name");
+        }
         Path filePath = tutorialsPath.resolve(fileName + "." + extension).normalize();
         logger.info("Fetching file: {}", filePath);
 
