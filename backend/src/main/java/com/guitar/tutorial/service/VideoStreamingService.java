@@ -28,9 +28,19 @@ public class VideoStreamingService {
     // Method to stream video files by song ID with range request support
     public ResponseEntity<Resource> streamVideo(String song, HttpServletRequest request, String tutorialsDirectory)
             throws IOException {
+        // Validate the song parameter to prevent path traversal attacks
+        if (song.contains("..") || song.contains("/") || song.contains("\\")) {
+            throw new IllegalArgumentException("Invalid song identifier");
+        }
+
         // Locate the video file for the given song ID in the external tutorials
         // directory
-        Path videoPath = Paths.get(tutorialsDirectory).resolve(song+".mp4");
+        Path videoPath = Paths.get(tutorialsDirectory).resolve(song + ".mp4").normalize();
+
+        // Ensure the resolved path is within the tutorials directory
+        if (!videoPath.startsWith(Paths.get(tutorialsDirectory).normalize())) {
+            throw new IllegalArgumentException("Invalid song identifier");
+        }
 
         // Check if the file exists
         if (!Files.exists(videoPath)) {
