@@ -39,6 +39,9 @@ public class TutorialService {
         if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
             throw new IllegalArgumentException("Invalid file name");
         }
+        if (extension.contains("..") || extension.contains("/") || extension.contains("\\")) {
+            throw new IllegalArgumentException("Invalid file extension");
+        }
         Path filePath = tutorialsPath.resolve(fileName + "." + extension).normalize();
         logger.info("Fetching file: {}", filePath);
 
