@@ -15,7 +15,7 @@
     "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.8",
     "@react-pdf/renderer": "^4.3.0",
-    "axios": "^1.8.4",
+    "axios": "^1.8.2",
     "file-saver": "^2.0.5",
     "framer-motion": "^12.5.0",
     "pdf-lib": "^1.17.1",
