@@ -13,6 +13,7 @@ services:
 
   backend:
     image: pdelebarre/guitar-tutorial-app-backend
+    platform: linux/amd64  # Add this line
     container_name: backend
     ports:
       - "8080:8080"

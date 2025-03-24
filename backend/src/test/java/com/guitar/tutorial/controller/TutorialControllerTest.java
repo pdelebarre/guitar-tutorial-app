@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 
+
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.util.List;
@@ -64,11 +65,12 @@ void testListTutorials_Success() throws Exception {
         when(tutorialService.listTutorials(any(Path.class), anyList())).thenReturn(List.of());
 
         // Act
-        ResponseEntity<List<String>> response = tutorialController.listTutorials();
+        ResponseEntity<List<TutorialDTO>> response = tutorialController.listTutorials();
 
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
         assertTrue(response.getBody().isEmpty());
     }
 
