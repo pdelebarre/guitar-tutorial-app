@@ -1,38 +1,33 @@
-# Stage 1: Build the Vite app
-FROM node:18-alpine AS builder
+# Build stage
+FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 
-# Set the working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# COPY .env .
-# Copy package.json and package-lock.json
+# Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install --legacy-peer-deps
+# Install dependencies with cache mount for better build performance
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --legacy-peer-deps
 
-# Copy the rest of the app’s code
+# Copy the rest of the app's code
 COPY . .
 
-# Build the app for production
+# Build the app
 RUN npm run build
 
-# Stage 2: Serve the app with NGINX
-FROM nginx:alpine
+# Run stage
+FROM --platform=$TARGETPLATFORM nginx:alpine
 
-# Expose the port NGINX is running on
-EXPOSE 3000
-
+# Copy nginx configuration
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
-# Copy the built files from the previous stage to the NGINX web root
+
+# Copy built files from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-#shell to be able to catch variables at docker run time
-#https://dev.to/sanjayttg/dynamic-environment-variables-for-dockerized-react-apps-5bc5
-# COPY env.sh /docker-entrypoint.d/env.sh
-# RUN chmod +x /docker-entrypoint.d/env.sh
+# Expose port
+EXPOSE 3000
 
-
-
-# Start NGINX server
+# Start NGINX
 CMD ["nginx", "-g", "daemon off;"]
