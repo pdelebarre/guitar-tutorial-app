@@ -4,12 +4,12 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 # Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy package files first for better caching
+COPY package.json ./
+COPY package-lock.json ./
 
-# Install dependencies with cache mount for better build performance
-RUN --mount=type=cache,target=/root/.npm \
-    npm ci --legacy-peer-deps
+# Install dependencies with specific version lock
+RUN npm ci --legacy-peer-deps --prefer-offline
 
 # Copy the rest of the app's code
 COPY . .
