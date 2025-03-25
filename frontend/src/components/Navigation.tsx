@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import {
   AppBar,
@@ -47,7 +48,7 @@ const Navigation: React.FC = () => {
         position="static"
         sx={{
           backgroundColor: nightMode ? "#333" : "#1976d2",
-          color: nightMode ? "#fff" : "#fff",
+          color: nightMode ? "#fff" : "#000",
         }}
       >
         <Toolbar>
