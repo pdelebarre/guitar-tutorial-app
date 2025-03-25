@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import {
   AppBar,
@@ -12,6 +11,8 @@ import {
   Box,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { Link } from "react-router-dom";
 import { getTutorials } from "../api/api";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -63,7 +64,13 @@ const Navigation: React.FC = () => {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Guitar Tutorials
           </Typography>
-
+          <IconButton
+            color="inherit"
+            onClick={toggleNightMode}
+            aria-label="toggle dark mode"
+          >
+            {nightMode ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
         </Toolbar>
       </AppBar>
 
