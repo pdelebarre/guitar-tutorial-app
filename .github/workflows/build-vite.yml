@@ -101,15 +101,15 @@ jobs:
         env:
           COSIGN_EXPERIMENTAL: 1
           COSIGN_YES: true
-          COSIGN_SKIP_VERIFICATION: true # Skip TUF verification during development
+          COSIGN_SKIP_VERIFICATION: true
         run: |
           for tag in $(echo "${{ steps.meta.outputs.tags }}" | tr ',' '\n'); do
-            cosign sign --yes --recursive "${tag}@${{ steps.build-and-push.outputs.digest }}"
+            cosign sign --yes "${tag}@${{ steps.build-and-push.outputs.digest }}"
           done
 
       - name: Verify signature
         if: ${{ github.event_name != 'pull_request' }}
         run: |
           for tag in $(echo "${{ steps.meta.outputs.tags }}" | tr ',' '\n'); do
-            cosign verify --recursive "${tag}@${{ steps.build-and-push.outputs.digest }}"
+            cosign verify "${tag}@${{ steps.build-and-push.outputs.digest }}"
           done
