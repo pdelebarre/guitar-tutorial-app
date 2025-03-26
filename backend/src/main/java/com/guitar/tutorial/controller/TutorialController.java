@@ -47,6 +47,7 @@ public class TutorialController {
     @CrossOrigin
 @GetMapping("/")
 public ResponseEntity<List<TutorialDTO>> listTutorials() {
+    logger.info("Tutorials directory: {}", tutorialsDirectory);
     try {
         Path tutorialsPath = Paths.get(tutorialsDirectory).normalize();
         List<String> tutorials = tutorialService.listTutorials(tutorialsPath, supportedExtensions);
