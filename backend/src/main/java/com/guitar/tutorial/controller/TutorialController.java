@@ -45,7 +45,7 @@ public class TutorialController {
 
     @Operation(summary = "List Available Tutorials")
     @CrossOrigin
-@GetMapping("/")
+@GetMapping({"", "/"})
 public ResponseEntity<List<TutorialDTO>> listTutorials() {
     logger.info("Tutorials directory: {}", tutorialsDirectory);
     try {
@@ -55,14 +55,20 @@ public ResponseEntity<List<TutorialDTO>> listTutorials() {
         List<TutorialDTO> tutorialDTOs = tutorials.stream()
                 .map(name -> {
                     Path filePath = tutorialsPath.resolve(name);
-                    File file = filePath.toFile();
+                    File file = new File(filePath.toFile().getAbsolutePath() + ".mp4");
                     long size = file.length();
                     //TODO this does not work
                     String type = name.substring(name.lastIndexOf('.') + 1);
                     long duration = 0;
-                    // if ("mp4".equalsIgnoreCase(type)) {
-                        duration = tutorialService.getVideoDuration(file);
-                    // }
+                    if (file.exists()) {
+                        try {
+                            duration = tutorialService.getVideoDuration(file);
+                        } catch (Exception e) {
+                            logger.error("Error getting video duration for file: {}", file.getAbsolutePath(), e);
+                        }
+                    } else {
+                        logger.warn("File not found: {}", file.getAbsolutePath());
+                    }
                     //TODO fix mp4 hard code
                     return new TutorialDTO(name, "mp4", size, duration);
                 })

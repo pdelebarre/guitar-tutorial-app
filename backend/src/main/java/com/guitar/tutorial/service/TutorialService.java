@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.apache.tika.Tika;
@@ -27,12 +26,14 @@ public class TutorialService {
             throw new FileNotFoundException("Tutorials directory not found");
         }
 
-        return Files.list(tutorialsPath)
-                .filter(Files::isRegularFile)
-                .filter(file -> hasSupportedExtension(file.getFileName().toString(), supportedExtensions))
-                .map(file -> file.getFileName().toString().replaceAll("\\.(mp4|pdf|srt)$", ""))
-                .distinct()
-                .collect(Collectors.toList());
+        try (var filesStream = Files.list(tutorialsPath)) {
+            return filesStream
+                    .filter(Files::isRegularFile)
+                    .filter(file -> hasSupportedExtension(file.getFileName().toString(), supportedExtensions))
+                    .map(file -> file.getFileName().toString().replaceAll("\\.(mp4|pdf|srt)$", ""))
+                    .distinct()
+                    .toList();
+        }
     }
 
     public Resource getFile(Path tutorialsPath, String fileName, String extension) throws IOException {
@@ -53,19 +54,48 @@ public class TutorialService {
             throw new FileNotFoundException("File not found");
         }
     }
-        public long getVideoDuration(File file) {
+
+    public long getVideoDuration(File file) {
         Tika tika = new Tika();
         Metadata metadata = new Metadata();
 
         try (FileInputStream inputStream = new FileInputStream(file)) {
             tika.parse(inputStream, metadata);
+
+            // Log all metadata keys
+            for (String name : metadata.names()) {
+                logger.debug("Metadata key: {}, value: {}", name, metadata.get(name));
+            }
+
             String duration = metadata.get("xmpDM:duration"); // Duration in milliseconds
+            if (duration == null) {
+                duration = metadata.get("Duration"); // Try another key
+            }
+            if (duration == null) {
+                duration = metadata.get("mpeg.header.duration"); // Try another key
+            }
+
             if (duration != null) {
-                return Long.parseLong(duration) / 1000; // Convert to seconds
+                try {
+                    // Handle different duration formats
+                    if (duration.contains(":")) {
+                        // If duration is in hh:mm:ss format
+                        String[] parts = duration.split(":");
+                        long hours = Long.parseLong(parts[0]);
+                        long minutes = Long.parseLong(parts[1]);
+                        double seconds = Double.parseDouble(parts[2]);
+                        return hours * 3600 + minutes * 60 + (long) seconds;
+                    } else {
+                        // If duration is in seconds with decimal
+                        return (long) Double.parseDouble(duration); // Convert to seconds
+                    }
+                } catch (NumberFormatException e) {
+                    logger.error("Error parsing duration: {}", duration, e);
+                }
             }
         } catch (Exception e) {
             // Log error and return 0 for missing duration
-            e.printStackTrace();
+            logger.error("Error parsing video file for duration", e);
         }
 
         return 0;
