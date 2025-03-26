@@ -109,7 +109,14 @@ jobs:
 
       - name: Verify signature
         if: ${{ github.event_name != 'pull_request' }}
+        env:
+          COSIGN_EXPERIMENTAL: 1
+          COSIGN_YES: true
+          COSIGN_SKIP_VERIFICATION: true
         run: |
           for tag in $(echo "${{ steps.meta.outputs.tags }}" | tr ',' '\n'); do
-            cosign verify "${tag}@${{ steps.build-and-push.outputs.digest }}"
+            cosign verify \
+              --certificate-identity="${{ secrets.GITHUB_REPOSITORY }}" \
+              --certificate-identity-regexp="${{ secrets.GITHUB_REPOSITORY }}" \
+              "${tag}@${{ steps.build-and-push.outputs.digest }}"
           done
