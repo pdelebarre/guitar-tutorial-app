@@ -15,7 +15,9 @@ console.log("Axios baseURL:", api.defaults.baseURL);
 
 export interface TutorialDTO {
   name: string; // Name of the tutorial
-  type: string; // File type (e.g., mp4, pdf)
+  videoUrl: string | null; // URL for the video file
+  subtitleUrl: string | null; // URL for the subtitle file
+  tablatureUrl: string | null; // URL for the tablature file
   size: number; // File size in bytes
   duration: number; // Duration in seconds, or 0 if not applicable
 }
@@ -32,7 +34,9 @@ export const getTutorials = async (): Promise<TutorialDTO[]> => {
     // Ensure all tutorials have the expected structure
     return response.data.map((tutorial) => ({
       name: tutorial.name || "Untitled",
-      type: tutorial.type || "unknown",
+      videoUrl: tutorial.videoUrl || null,
+      subtitleUrl: tutorial.subtitleUrl || null,
+      tablatureUrl: tutorial.tablatureUrl || null,
       size: tutorial.size || 0,
       duration: tutorial.duration || 0,
     }));

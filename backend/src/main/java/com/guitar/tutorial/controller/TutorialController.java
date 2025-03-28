@@ -1,6 +1,5 @@
 package com.guitar.tutorial.controller;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.guitar.tutorial.dto.TutorialDTO;
 import com.guitar.tutorial.service.TutorialService;
+import com.guitar.tutorial.service.TutorialService.TutorialGroup;
 
 @RestController
 @RequestMapping("/api/tutorials")
@@ -45,41 +45,40 @@ public class TutorialController {
 
     @Operation(summary = "List Available Tutorials")
     @CrossOrigin
-@GetMapping({"", "/"})
-public ResponseEntity<List<TutorialDTO>> listTutorials() {
-    logger.info("Tutorials directory: {}", tutorialsDirectory);
-    try {
-        Path tutorialsPath = Paths.get(tutorialsDirectory).normalize();
-        List<String> tutorials = tutorialService.listTutorials(tutorialsPath, supportedExtensions);
+    @GetMapping({"", "/"})
+    public ResponseEntity<List<TutorialDTO>> listTutorials() {
+        logger.info("Tutorials directory: {}", tutorialsDirectory);
+        try {
+            Path tutorialsPath = Paths.get(tutorialsDirectory).normalize();
+            List<TutorialGroup> tutorialGroups = tutorialService.listTutorials(tutorialsPath, supportedExtensions);
 
-        List<TutorialDTO> tutorialDTOs = tutorials.stream()
-                .map(name -> {
-                    Path filePath = tutorialsPath.resolve(name);
-                    File file = new File(filePath.toFile().getAbsolutePath() + ".mp4");
-                    long size = file.length();
-                    //TODO this does not work
-                    String type = name.substring(name.lastIndexOf('.') + 1);
-                    long duration = 0;
-                    if (file.exists()) {
-                        try {
-                            duration = tutorialService.getVideoDuration(file);
-                        } catch (Exception e) {
-                            logger.error("Error getting video duration for file: {}", file.getAbsolutePath(), e);
+            List<TutorialDTO> tutorialDTOs = tutorialGroups.stream()
+                    .map(group -> {
+                        String baseName = group.getBaseName();
+                        String videoUrl = group.getVideoPath() != null ? "/api/tutorials/" + baseName + "/mp4" : null;
+                        String subtitleUrl = group.getSubtitlePath() != null ? "/api/tutorials/" + baseName + "/srt" : null;
+                        String tablatureUrl = group.getTablaturePath() != null ? "/api/tutorials/" + baseName + "/pdf" : null;
+                        long size = 0;
+                        long duration = 0;
+                        if (group.getVideoPath() != null) {
+                            try {
+                                size = group.getVideoPath().toFile().length();
+                                duration = tutorialService.getVideoDuration(group.getVideoPath().toFile());
+                            } catch (Exception e) {
+                                logger.warn("Could not determine duration for video {}: {}", group.getVideoPath().getFileName(), e.getMessage());
+                            }
                         }
-                    } else {
-                        logger.warn("File not found: {}", file.getAbsolutePath());
-                    }
-                    //TODO fix mp4 hard code
-                    return new TutorialDTO(name, "mp4", size, duration);
-                })
-                .toList();
+                        return new TutorialDTO(baseName, videoUrl, subtitleUrl, tablatureUrl, size, duration);
+                    })
+                    .toList();
 
-        return ResponseEntity.ok(tutorialDTOs);
-    } catch (IOException e) {
-        logger.error("Error listing tutorials: {}", e.getMessage(), e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.ok(tutorialDTOs);
+        } catch (IOException e) {
+            logger.error("Error listing tutorials: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-}
+
     @Operation(summary = "Fetch Tutorial File")
     @GetMapping("/{fileName}/{extension}")
     @CrossOrigin

@@ -17,12 +17,7 @@ import { Link } from "react-router-dom";
 import { getTutorials } from "../api/api";
 import { useDarkMode } from "../context/DarkModeContext";
 
-interface TutorialDTO {
-  name: string;
-  type: string;
-  size: number;
-  duration: number;
-}
+import type { TutorialDTO } from "../api/api";
 
 const Navigation: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
@@ -97,7 +92,7 @@ const Navigation: React.FC = () => {
                 <ListItemText
                   primary={
                     <Link
-                      to={`/tutorial/${encodeURIComponent(tutorial.name)}`}
+                      to={`/tutorial/${encodeURIComponent(tutorial.name.replace(/[|｜[\]]/g, '').trim())}`}
                       style={{
                         textDecoration: "none",
                         color: nightMode ? "#90caf9" : "blue",

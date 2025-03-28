@@ -7,31 +7,23 @@ import {
   Box,
   CircularProgress,
   Alert,
-
+  Button,
 } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
-import { getTutorials } from "../api/api";
+import { getTutorials, TutorialDTO } from "../api/api";
 import { useDarkMode } from "../context/DarkModeContext";
-
-interface TutorialDTO {
-  name: string;
-  type: string;
-  size: number;
-  duration: number;
-}
+import { Link } from 'react-router-dom';
 
 const TableOfContents: React.FC = () => {
   const [tutorials, setTutorials] = useState<TutorialDTO[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-    const { nightMode } = useDarkMode();
+  const { nightMode } = useDarkMode();
 
   useEffect(() => {
     setLoading(true);
     getTutorials()
       .then((data) => {
-        console.log("Fetched Tutorials:", data); // Debugging step
         setTutorials(data);
         setError(null);
       })
@@ -41,8 +33,6 @@ const TableOfContents: React.FC = () => {
       })
       .finally(() => setLoading(false));
   }, []);
-
-
 
   return (
     <Box
@@ -54,13 +44,6 @@ const TableOfContents: React.FC = () => {
         transition: "background-color 0.3s, color 0.3s",
       }}
     >
-      {/* <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Typography variant="h4" gutterBottom>
-          Guitar Tutorials
-        </Typography>
-
-      </Box> */}
-
       {loading ? (
         <CircularProgress />
       ) : error ? (
@@ -68,31 +51,15 @@ const TableOfContents: React.FC = () => {
       ) : tutorials.length > 0 ? (
         <List>
           {tutorials.map((tutorial) => (
-            <ListItem key={tutorial.name}>
+            <ListItem key={tutorial.name} sx={{ flexDirection: "column", alignItems: "flex-start" }}>
               <ListItemText
                 primary={
-                  <Typography component="span" variant="body1">
-                    <RouterLink
-                      to={`/tutorial/${encodeURIComponent(tutorial.name)}`}
-                      style={{
-                        textDecoration: "none",
-                        color: nightMode ? "#90caf9" : "inherit",
-                      }}
-                    >
-                      {tutorial.name.replace(/_/g, " ")}.{tutorial.type}
-                    </RouterLink>
+                  <Typography component="span" variant="h6">
+                    {tutorial.name.replace(/_/g, " ")}
                   </Typography>
                 }
                 secondary={
                   <>
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      color={nightMode ? "#b0bec5" : "textSecondary"}
-                    >
-                      Type: {tutorial.type.toUpperCase()}
-                    </Typography>
-                    <br />
                     <Typography
                       component="span"
                       variant="body2"
@@ -116,6 +83,38 @@ const TableOfContents: React.FC = () => {
                   </>
                 }
               />
+              <Box sx={{ display: "flex", gap: 1, marginTop: 1 }}>
+                {tutorial.videoUrl && (
+                  <Button
+                    component={Link}
+                    to={`/tutorial/${encodeURIComponent(tutorial.name.replace(/[|｜[\]]/g, '').trim())}`}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Watch Video
+                  </Button>
+                )}
+                {tutorial.subtitleUrl && (
+                  <Button
+                    href={tutorial.subtitleUrl}
+                    target="_blank"
+                    variant="contained"
+                    color="secondary"
+                  >
+                    Download Subtitles
+                  </Button>
+                )}
+                {tutorial.tablatureUrl && (
+                  <Button
+                    href={tutorial.tablatureUrl}
+                    target="_blank"
+                    variant="contained"
+                    color="success"
+                  >
+                    View Tablature
+                  </Button>
+                )}
+              </Box>
             </ListItem>
           ))}
         </List>

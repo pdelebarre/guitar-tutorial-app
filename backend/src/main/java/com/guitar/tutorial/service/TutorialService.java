@@ -6,7 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.apache.tika.Tika;
@@ -20,20 +23,29 @@ import org.springframework.stereotype.Service;
 public class TutorialService {
     private static final Logger logger = LoggerFactory.getLogger(TutorialService.class);
 
-    public List<String> listTutorials(Path tutorialsPath, List<String> supportedExtensions) throws IOException {
+    public List<TutorialGroup> listTutorials(Path tutorialsPath, List<String> supportedExtensions) throws IOException {
         if (!Files.exists(tutorialsPath) || !Files.isDirectory(tutorialsPath)) {
             logger.error("Tutorials directory does not exist or is not a directory: {}", tutorialsPath);
             throw new FileNotFoundException("Tutorials directory not found");
         }
 
+        Map<String, TutorialGroup> tutorialGroups = new HashMap<>();
+
         try (var filesStream = Files.list(tutorialsPath)) {
-            return filesStream
-                    .filter(Files::isRegularFile)
-                    .filter(file -> hasSupportedExtension(file.getFileName().toString(), supportedExtensions))
-                    .map(file -> file.getFileName().toString().replaceAll("\\.(mp4|pdf|srt)$", ""))
-                    .distinct()
-                    .toList();
+            filesStream.filter(Files::isRegularFile)
+                    .forEach(file -> {
+                        String fileName = file.getFileName().toString();
+                        String baseName = fileName.substring(0, fileName.lastIndexOf('.'));
+                        String extension = fileName.substring(fileName.lastIndexOf('.') + 1);
+
+                        if (supportedExtensions.contains(extension)) {
+                            TutorialGroup tutorialGroup = tutorialGroups.computeIfAbsent(baseName, TutorialGroup::new);
+                            tutorialGroup.addFile(file, extension);
+                        }
+                    });
         }
+
+        return new ArrayList<>(tutorialGroups.values());
     }
 
     public Resource getFile(Path tutorialsPath, String fileName, String extension) throws IOException {
@@ -103,5 +115,46 @@ public class TutorialService {
 
     public boolean hasSupportedExtension(String fileName, List<String> supportedExtensions) {
         return supportedExtensions.stream().anyMatch(fileName::endsWith);
+    }
+
+    public static class TutorialGroup {
+        private String baseName;
+        private Path videoPath;
+        private Path subtitlePath;
+        private Path tablaturePath;
+
+        public TutorialGroup(String baseName) {
+            this.baseName = baseName;
+        }
+
+        public void addFile(Path file, String extension) {
+            switch (extension) {
+                case "mp4":
+                    this.videoPath = file;
+                    break;
+                case "srt":
+                    this.subtitlePath = file;
+                    break;
+                case "pdf":
+                    this.tablaturePath = file;
+                    break;
+            }
+        }
+
+        public String getBaseName() {
+            return baseName;
+        }
+
+        public Path getVideoPath() {
+            return videoPath;
+        }
+
+        public Path getSubtitlePath() {
+            return subtitlePath;
+        }
+
+        public Path getTablaturePath() {
+            return tablaturePath;
+        }
     }
 }

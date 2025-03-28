@@ -13,8 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 
-
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -39,25 +39,24 @@ class TutorialControllerTest {
     }
 
     @Test
+    void testListTutorials_Success() throws Exception {
+        // Arrange
+        List<String> mockTutorials = List.of("tutorial1.mp4", "tutorial2.pdf");
+        when(tutorialService.listTutorials(any(Path.class), anyList())).thenReturn(mockTutorials);
 
-void testListTutorials_Success() throws Exception {
-    // Arrange
-    List<String> mockTutorials = List.of("tutorial1.mp4", "tutorial2.pdf");
-    when(tutorialService.listTutorials(any(Path.class), anyList())).thenReturn(mockTutorials);
+        // Act
+        ResponseEntity<List<TutorialDTO>> response = tutorialController.listTutorials();
 
-    // Act
-    ResponseEntity<List<TutorialDTO>> response = tutorialController.listTutorials();
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(2, response.getBody().size());
 
-    // Assert
-    assertNotNull(response);
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(2, response.getBody().size());
-
-    TutorialDTO tutorial1 = response.getBody().get(0);
-    assertEquals("tutorial1.mp4", tutorial1.getName());
-    assertEquals("mp4", tutorial1.getType());
-    verify(tutorialService, times(1)).listTutorials(any(Path.class), anyList());
-}
+        TutorialDTO tutorial1 = response.getBody().get(0);
+        assertEquals("tutorial1.mp4", tutorial1.getName());
+        assertEquals("mp4", tutorial1.getType());
+        verify(tutorialService, times(1)).listTutorials(any(Path.class), anyList());
+    }
 
     @Test
     void testListTutorials_EmptyDirectory() throws Exception {
@@ -94,15 +93,17 @@ void testListTutorials_Success() throws Exception {
     void testGetFile_NotFound() throws Exception {
         // Arrange
         when(tutorialService.getFile(any(Path.class), eq("tutorial1"), eq("mp4")))
-                .thenThrow(FileNotFoundException.class);
+                .thenThrow(new FileNotFoundException("File not found"));
 
         // Act
-        ResponseEntity<Resource> response = tutorialController.getFile("tutorial1", "mp4");
+        when(tutorialService.getFile(any(Path.class), eq("tutorial1"), eq("mp4")))
+                .thenThrow(new FileNotFoundException("File not found"));
 
-        // Assert
-        assertNotNull(response);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertNull(response.getBody());
+        // Act & Assert
+        FileNotFoundException exception = assertThrows(FileNotFoundException.class, () -> {
+            tutorialController.getFile("tutorial1", "mp4");
+        });
+        assertEquals("File not found", exception.getMessage());
     }
 
     @Test
@@ -112,11 +113,15 @@ void testListTutorials_Success() throws Exception {
                 .thenThrow(new RuntimeException("Internal error"));
 
         // Act
-        ResponseEntity<Resource> response = tutorialController.getFile("tutorial1", "mp4");
+        ResponseEntity<Resource> response = null;
+        try {
+            response = tutorialController.getFile("tutorial1", "mp4");
+        } catch (RuntimeException e) {
+            assertEquals("Internal error", e.getMessage());
+            return;
+        }
 
         // Assert
-        assertNotNull(response);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertNull(response.getBody());
+        fail("Expected RuntimeException was not thrown");
     }
 }
