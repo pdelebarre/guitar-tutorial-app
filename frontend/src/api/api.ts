@@ -4,7 +4,8 @@ import { Comment, Playlist } from "../types/types";
 
 // Create axios instance with simplified baseURL
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "" // to manage dev (var in .env.development) vs prod
+  baseURL: import.meta.env.VITE_API_URL || "", // to manage dev (var in .env.development) vs prod
+  withCredentials: true
 });
 
 
@@ -49,25 +50,12 @@ export const getTutorials = async (): Promise<TutorialDTO[]> => {
 
 
 // Utility function to URL-encode the file name
-const encodeFileName = (fileName: string) => encodeURIComponent(fileName);
+const encodeFileName = (fileName: string) => encodeURIComponent(fileName).replace(/\+/g, '%20');
 
 // Fetch MP4 file URL
-// 
-// export const getVideoUrl = (fileName: string): string => {
-//   return `${api.defaults.baseURL}/api/tutorials/${encodeFileName(fileName)}/mp4`;
-// };
-export const getVideoUrl = async (fileName: string): Promise<string | null> => {
-  try {
-    const response = await api.get(
-      `/api/videos/${encodeURIComponent(fileName)}/stream`,
-      { responseType: "blob" }
-    );
-    return URL.createObjectURL(response.data); // Stream response as Blob
-  } catch (error) {
-    console.error("Error streaming video:", error);
-    return null;
-  }
-};  
+export const getVideoUrl = (fileName: string): string => {
+  return `${api.defaults.baseURL}/api/tutorials/${encodeFileName(fileName)}/mp4`;
+};
 
 // Fetch SRT file URL
 export const getSubtitleUrl = async (
