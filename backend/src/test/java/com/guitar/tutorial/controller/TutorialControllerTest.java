@@ -36,26 +36,36 @@ class TutorialControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         ReflectionTestUtils.setField(tutorialController, "tutorialsDirectory", "/path/to/tutorials");
+        ReflectionTestUtils.setField(tutorialController, "supportedExtensions", List.of("mp4", "pdf"));
     }
 
     @Test
     void testListTutorials_Success() throws Exception {
         // Arrange
-        List<String> mockTutorials = List.of("tutorial1.mp4", "tutorial2.pdf");
-        when(tutorialService.listTutorials(any(Path.class), anyList())).thenReturn(mockTutorials);
+        TutorialService.TutorialGroup mockGroup1 = new TutorialService.TutorialGroup("tutorial1");
+        mockGroup1.addFile(Path.of("/path/to/tutorial1.mp4"), "mp4");
+        
+        List<String> supportedExtensions = List.of("mp4", "pdf");
+        Path expectedPath = Path.of("/path/to/tutorials");
+        
+        System.out.println("Setting up mock to return: " + mockGroup1);
+        when(tutorialService.listTutorials(eq(expectedPath), eq(supportedExtensions)))
+            .thenReturn(List.of(mockGroup1));
 
         // Act
         ResponseEntity<List<TutorialDTO>> response = tutorialController.listTutorials();
+        System.out.println("Received response: " + response.getBody());
 
         // Assert
+        verify(tutorialService).listTutorials(eq(expectedPath), eq(supportedExtensions));
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(2, response.getBody().size());
+        assertNotNull(response.getBody());
+        assertEquals(1, response.getBody().size(), "Expected 1 tutorial but got: " + response.getBody());
 
         TutorialDTO tutorial1 = response.getBody().get(0);
-        assertEquals("tutorial1.mp4", tutorial1.getName());
-        assertEquals("mp4", tutorial1.getType());
-        verify(tutorialService, times(1)).listTutorials(any(Path.class), anyList());
+        assertEquals("tutorial1", tutorial1.getName());
+        assertNotNull(tutorial1.getVideoUrl());
     }
 
     @Test
@@ -96,14 +106,11 @@ class TutorialControllerTest {
                 .thenThrow(new FileNotFoundException("File not found"));
 
         // Act
-        when(tutorialService.getFile(any(Path.class), eq("tutorial1"), eq("mp4")))
-                .thenThrow(new FileNotFoundException("File not found"));
+        ResponseEntity<Resource> response = tutorialController.getFile("tutorial1", "mp4");
 
-        // Act & Assert
-        FileNotFoundException exception = assertThrows(FileNotFoundException.class, () -> {
-            tutorialController.getFile("tutorial1", "mp4");
-        });
-        assertEquals("File not found", exception.getMessage());
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(tutorialService).getFile(any(Path.class), eq("tutorial1"), eq("mp4"));
     }
 
     @Test
