@@ -1,5 +1,62 @@
 package com.guitar.tutorial.controller;
 
+import com.guitar.tutorial.model.Tutorial;
+import com.guitar.tutorial.service.TutorialService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/tutorials")
+public class TutorialController {
+    @Autowired
+    private TutorialService tutorialService;
+
+    @GetMapping
+    public List<Tutorial> getAllTutorials(
+            @RequestParam(required = false) Long groupId,
+            @RequestParam(required = false, defaultValue = "title") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String direction
+    ) {
+        if (groupId != null) {
+            return tutorialService.getTutorialsByGroupId(groupId);
+        }
+        return tutorialService.getTutorialsSorted(sortBy, direction);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Tutorial> getTutorialById(@PathVariable Long id) {
+        Optional<Tutorial> tutorial = tutorialService.getTutorialById(id);
+        return tutorial.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public Tutorial createTutorial(@RequestBody Tutorial tutorial) {
+        return tutorialService.saveTutorial(tutorial);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Tutorial> updateTutorial(@PathVariable Long id, @RequestBody Tutorial tutorial) {
+        if (!tutorialService.getTutorialById(id).isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        tutorial.setId(id);
+        return ResponseEntity.ok(tutorialService.saveTutorial(tutorial));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTutorial(@PathVariable Long id) {
+        if (!tutorialService.getTutorialById(id).isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        tutorialService.deleteTutorial(id);
+        return ResponseEntity.noContent().build();
+    }
+}package com.guitar.tutorial.controller;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;

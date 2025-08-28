@@ -1,5 +1,49 @@
 package com.guitar.tutorial.service;
 
+import com.guitar.tutorial.model.Tutorial;
+import com.guitar.tutorial.repository.TutorialRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class TutorialService {
+    @Autowired
+    private TutorialRepository tutorialRepository;
+
+    public List<Tutorial> getAllTutorials() {
+        return tutorialRepository.findAll();
+    }
+
+    public Optional<Tutorial> getTutorialById(Long id) {
+        return tutorialRepository.findById(id);
+    }
+
+    public Tutorial saveTutorial(Tutorial tutorial) {
+        return tutorialRepository.save(tutorial);
+    }
+
+    public void deleteTutorial(Long id) {
+        tutorialRepository.deleteById(id);
+    }
+
+    public List<Tutorial> getTutorialsByGroupId(Long groupId) {
+        return tutorialRepository.findByGroupId(groupId);
+    }
+
+    public List<Tutorial> getTutorialsSorted(String sortBy, String direction) {
+        if ("title".equalsIgnoreCase(sortBy)) {
+            return "desc".equalsIgnoreCase(direction) ? tutorialRepository.findAllByOrderByTitleDesc() : tutorialRepository.findAllByOrderByTitleAsc();
+        } else if ("rank".equalsIgnoreCase(sortBy)) {
+            return "desc".equalsIgnoreCase(direction) ? tutorialRepository.findAllByOrderByRankDesc() : tutorialRepository.findAllByOrderByRankAsc();
+        } else {
+            return tutorialRepository.findAll();
+        }
+    }
+}package com.guitar.tutorial.service;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
