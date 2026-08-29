@@ -1,112 +1,113 @@
 {
   "$schema": "https://opencode.ai/schema/agents.json",
-  "imports": [
-    "./models.json",
-    "./skills.json",
-    "./rules.json"
-  ],
-  "sharedContext": true,
-  "contextSharing": {
-    "enabled": true,
-    "strategy": "progressive",
-    "maxContextTokens": 8000,
-    "summaryThreshold": 5000
-  },
   "agents": [
     {
       "name": "backend",
-      "description": "Spring Boot backend specialist - cost-optimized",
-      "model": "${models.standard}",
-      "fallbackModels": ["${models.complex}", "${models.cheapest}"],
-      "skills": ["java", "spring-boot", "maven", "junit", "mockito", "rest-api"],
-      "rules": ["${rules.concise}", "${rules.shareContext}", "${rules.costOptimized}", "${rules.backend}"],
-      "taskRouting": {
-        "simple": "${models.cheapest}",
-        "standard": "${models.standard}",
-        "complex": "${models.complex}"
-      }
+      "description": "Spring Boot backend specialist for guitar-tutorial-app",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "tools": {
+        "allowed": ["github_mcp_direct:*"]
+      },
+      "rules": [
+        "Focus on Java/Spring Boot code in backend/ directory",
+        "Use Maven for dependency management",
+        "Follow Spring Boot best practices",
+        "Maintain REST API conventions",
+        "Write unit tests with JUnit and Mockito",
+        "Use the existing pom.xml structure",
+        "Keep database migrations in src/main/resources/db/migration",
+        "Follow the existing package structure: com.guitartutorial.backend.*"
+      ]
     },
     {
       "name": "frontend",
-      "description": "React/TypeScript frontend specialist - cost-optimized",
-      "model": "${models.standard}",
-      "fallbackModels": ["${models.complex}", "${models.cheapest}"],
-      "skills": ["react", "typescript", "vite", "tailwind", "vitest", "testing-library"],
-      "rules": ["${rules.concise}", "${rules.shareContext}", "${rules.costOptimized}", "${rules.frontend}"],
-      "taskRouting": {
-        "simple": "${models.cheapest}",
-        "standard": "${models.standard}",
-        "complex": "${models.complex}"
-      }
+      "description": "React/TypeScript frontend specialist for guitar-tutorial-app",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "tools": {
+        "allowed": ["github_mcp_direct:*"]
+      },
+      "rules": [
+        "Focus on React/TypeScript code in frontend/src/ directory",
+        "Use Vite for build and dev server",
+        "Follow Tailwind CSS conventions for styling",
+        "Use the existing component structure",
+        "Write tests with Vitest and React Testing Library",
+        "Maintain the existing API client pattern in src/api/",
+        "Use TypeScript strict mode",
+        "Follow the existing page routing structure"
+      ]
     },
     {
       "name": "docker",
-      "description": "Docker and containerization specialist - cost-optimized",
-      "model": "${models.standard}",
-      "fallbackModels": ["${models.complex}", "${models.cheapest}"],
-      "skills": ["docker", "docker-compose", "nginx", "containers", "security"],
-      "rules": ["${rules.concise}", "${rules.shareContext}", "${rules.costOptimized}", "${rules.docker}"],
-      "taskRouting": {
-        "simple": "${models.cheapest}",
-        "standard": "${models.standard}",
-        "complex": "${models.complex}"
-      }
+      "description": "Docker and containerization specialist",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "tools": {
+        "allowed": ["github_mcp_direct:*"]
+      },
+      "rules": [
+        "Focus on Dockerfile and docker-compose files",
+        "Maintain multi-stage builds for production",
+        "Keep dev and prod configurations separate",
+        "Use nginx for reverse proxy",
+        "Ensure proper health checks",
+        "Follow security best practices for containers",
+        "Keep image sizes optimized",
+        "Maintain environment-specific compose files"
+      ]
     },
     {
       "name": "fullstack",
-      "description": "Full-stack coordinator - cost-optimized orchestrator",
-      "model": "${models.standard}",
-      "fallbackModels": ["${models.complex}", "${models.cheapest}"],
-      "skills": ["fullstack", "architecture", "api-design", "integration", "orchestration"],
-      "rules": ["${rules.concise}", "${rules.shareContext}", "${rules.costOptimized}", "${rules.fullstack}"],
-      "taskRouting": {
-        "simple": "${models.cheapest}",
-        "standard": "${models.standard}",
-        "complex": "${models.complex}",
-        "orchestration": "${models.standard}"
-      }
+      "description": "Full-stack coordinator for guitar-tutorial-app",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "tools": {
+        "allowed": ["github_mcp_direct:*"]
+      },
+      "rules": [
+        "Coordinate changes across frontend and backend",
+        "Ensure API contracts are maintained",
+        "Review end-to-end integration points",
+        "Manage database schema changes",
+        "Coordinate deployment configurations",
+        "Ensure consistent error handling across layers",
+        "Maintain API documentation",
+        "Review cross-cutting concerns like auth, logging, monitoring"
+      ]
     },
     {
       "name": "testing",
-      "description": "Testing and QA specialist - cost-optimized",
-      "model": "${models.standard}",
-      "fallbackModels": ["${models.complex}", "${models.cheapest}"],
-      "skills": ["junit", "mockito", "vitest", "testing-library", "integration-testing", "e2e"],
-      "rules": ["${rules.concise}", "${rules.shareContext}", "${rules.costOptimized}", "${rules.testing}"],
-      "taskRouting": {
-        "simple": "${models.cheapest}",
-        "standard": "${models.standard}",
-        "complex": "${models.complex}"
-      }
+      "description": "Testing and quality assurance specialist",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "tools": {
+        "allowed": ["github_mcp_direct:*"]
+      },
+      "rules": [
+        "Write unit tests for backend (JUnit, Mockito)",
+        "Write component tests for frontend (Vitest, RTL)",
+        "Create integration tests for API endpoints",
+        "Maintain test coverage above 80%",
+        "Follow test naming conventions",
+        "Use test containers for integration tests",
+        "Create E2E test scenarios",
+        "Review and improve existing tests"
+      ]
     },
     {
       "name": "devops",
-      "description": "CI/CD and deployment specialist - cost-optimized",
-      "model": "${models.standard}",
-      "fallbackModels": ["${models.complex}", "${models.cheapest}"],
-      "skills": ["github-actions", "docker", "nginx", "ci-cd", "monitoring", "security"],
-      "rules": ["${rules.concise}", "${rules.shareContext}", "${rules.costOptimized}", "${rules.devops}"],
-      "taskRouting": {
-        "simple": "${models.cheapest}",
-        "standard": "${models.standard}",
-        "complex": "${models.complex}"
-      }
+      "description": "CI/CD and deployment specialist",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "tools": {
+        "allowed": ["github_mcp_direct:*"]
+      },
+      "rules": [
+        "Manage GitHub Actions workflows",
+        "Maintain docker-compose configurations",
+        "Configure nginx reverse proxy",
+        "Set up monitoring and logging",
+        "Manage environment variables",
+        "Handle secrets securely",
+        "Optimize build pipelines",
+        "Ensure zero-downtime deployments"
+      ]
     }
-  ],
-  "modelRouting": {
-    "strategy": "cost-optimized",
-    "models": {
-      "cheapest": "${models.cheapest}",
-      "standard": "${models.standard}",
-      "complex": "${models.complex}"
-    },
-    "rules": ["${rules.modelRouting}"]
-  },
-  "tokenOptimization": {
-    "enabled": true,
-    "maxTokensPerRequest": 4000,
-    "contextCompression": true,
-    "summaryStrategy": "progressive",
-    "rules": ["${rules.tokenOptimization}"]
-  }
+  ]
 }
