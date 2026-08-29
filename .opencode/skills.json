@@ -1,0 +1,140 @@
+{
+  "$schema": "https://opencode.ai/schema/skills.json",
+  "skills": {
+    "java": {
+      "name": "Java Development",
+      "description": "Java 17+ development, OOP, functional programming, streams",
+      "keywords": ["java", "jdk", "jvm", "spring"]
+    },
+    "spring-boot": {
+      "name": "Spring Boot",
+      "description": "Spring Boot 3.x, auto-configuration, starters, actuator",
+      "keywords": ["spring", "spring-boot", "@RestController", "@Service", "@Repository"]
+    },
+    "maven": {
+      "name": "Maven Build",
+      "description": "Maven 3.x, pom.xml, dependency management, plugins",
+      "keywords": ["maven", "pom.xml", "mvn", "dependency"]
+    },
+    "junit": {
+      "name": "JUnit Testing",
+      "description": "JUnit 5, assertions, parameterized tests, extensions",
+      "keywords": ["junit", "@Test", "@BeforeEach", "assertThat"]
+    },
+    "mockito": {
+      "name": "Mockito Mocking",
+      "description": "Mockito 5.x, mocking, stubbing, verification",
+      "keywords": ["mockito", "@Mock", "@InjectMocks", "when", "verify"]
+    },
+    "rest-api": {
+      "name": "REST API Design",
+      "description": "RESTful services, HTTP methods, status codes, OpenAPI",
+      "keywords": ["REST", "HTTP", "@GetMapping", "@PostMapping", "@RequestBody"]
+    },
+    "react": {
+      "name": "React Development",
+      "description": "React 18+, hooks, functional components, context",
+      "keywords": ["react", "useState", "useEffect", "useContext", "JSX"]
+    },
+    "typescript": {
+      "name": "TypeScript",
+      "description": "TypeScript 5.x, types, interfaces, generics, strict mode",
+      "keywords": ["typescript", "interface", "type", "generic", "strict"]
+    },
+    "vite": {
+      "name": "Vite Build",
+      "description": "Vite 5.x, HMR, build optimization, plugins",
+      "keywords": ["vite", "vite.config", "HMR", "esbuild"]
+    },
+    "tailwind": {
+      "name": "Tailwind CSS",
+      "description": "Tailwind CSS 3.x, utility classes, responsive design",
+      "keywords": ["tailwind", "className", "flex", "grid", "responsive"]
+    },
+    "vitest": {
+      "name": "Vitest Testing",
+      "description": "Vitest, unit testing, snapshot testing, coverage",
+      "keywords": ["vitest", "describe", "it", "expect", "test"]
+    },
+    "testing-library": {
+      "name": "React Testing Library",
+      "description": "RTL, user-event, queries, accessibility testing",
+      "keywords": ["testing-library", "render", "screen", "user-event", "queryBy"]
+    },
+    "docker": {
+      "name": "Docker",
+      "description": "Docker containers, images, multi-stage builds, optimization",
+      "keywords": ["docker", "Dockerfile", "docker-compose", "container"]
+    },
+    "docker-compose": {
+      "name": "Docker Compose",
+      "description": "Compose v2, services, networks, volumes, health checks",
+      "keywords": ["docker-compose", "services", "volumes", "networks"]
+    },
+    "nginx": {
+      "name": "Nginx",
+      "description": "Nginx configuration, reverse proxy, load balancing",
+      "keywords": ["nginx", "reverse-proxy", "location", "proxy_pass"]
+    },
+    "containers": {
+      "name": "Container Best Practices",
+      "description": "Security, optimization, health checks, minimal images",
+      "keywords": ["security", "optimization", "healthcheck", "alpine"]
+    },
+    "security": {
+      "name": "Security",
+      "description": "Container security, secrets management, vulnerability scanning",
+      "keywords": ["security", "secrets", "vulnerability", "scan"]
+    },
+    "fullstack": {
+      "name": "Full-Stack Development",
+      "description": "End-to-end development, API contracts, integration",
+      "keywords": ["fullstack", "integration", "API", "end-to-end"]
+    },
+    "architecture": {
+      "name": "Software Architecture",
+      "description": "System design, patterns, microservices, monoliths",
+      "keywords": ["architecture", "design-patterns", "microservices", "monolith"]
+    },
+    "api-design": {
+      "name": "API Design",
+      "description": "REST, GraphQL, gRPC, OpenAPI, versioning",
+      "keywords": ["API", "REST", "GraphQL", "OpenAPI", "versioning"]
+    },
+    "integration": {
+      "name": "System Integration",
+      "description": "API integration, message queues, event-driven architecture",
+      "keywords": ["integration", "messaging", "events", "webhooks"]
+    },
+    "orchestration": {
+      "name": "Agent Orchestration",
+      "description": "Coordinating multiple agents, task delegation, context management",
+      "keywords": ["orchestration", "coordination", "delegation", "multi-agent"]
+    },
+    "integration-testing": {
+      "name": "Integration Testing",
+      "description": "Test containers, API testing, database testing",
+      "keywords": ["integration", "testcontainers", "@SpringBootTest", "API-test"]
+    },
+    "e2e": {
+      "name": "End-to-End Testing",
+      "description": "E2E scenarios, user flows, regression testing",
+      "keywords": ["e2e", "end-to-end", "cypress", "playwright", "user-flow"]
+    },
+    "github-actions": {
+      "name": "GitHub Actions",
+      "description": "CI/CD workflows, runners, secrets, deployment",
+      "keywords": ["github-actions", "workflow", "CI", "CD", "runner"]
+    },
+    "ci-cd": {
+      "name": "CI/CD",
+      "description": "Continuous integration and deployment pipelines",
+      "keywords": ["CI", "CD", "pipeline", "deployment", "automation"]
+    },
+    "monitoring": {
+      "name": "Monitoring & Observability",
+      "description": "Logging, metrics, tracing, alerting",
+      "keywords": ["monitoring", "logging", "metrics", "tracing", "alerting"]
+    }
+  }
+}

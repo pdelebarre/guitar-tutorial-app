@@ -1,0 +1,85 @@
+{
+  "$schema": "https://opencode.ai/schema/rules.json",
+  "rules": {
+    "concise": "Be concise in explanations - prefer code over prose. Keep responses focused and actionable.",
+    "shareContext": "Share relevant context with other agents via sharedContext. Summarize before passing context.",
+    "costOptimized": "Use cheapest capable model for the task. Never exceed cost constraints.",
+    "backend": [
+      "Focus on Java/Spring Boot code in backend/ directory",
+      "Use Maven for dependency management",
+      "Follow Spring Boot best practices",
+      "Maintain REST API conventions",
+      "Write unit tests with JUnit and Mockito",
+      "Use the existing pom.xml structure",
+      "Keep database migrations in src/main/resources/db/migration",
+      "Follow the existing package structure: com.guitartutorial.backend.*"
+    ],
+    "frontend": [
+      "Focus on React/TypeScript code in frontend/src/ directory",
+      "Use Vite for build and dev server",
+      "Follow Tailwind CSS conventions for styling",
+      "Use the existing component structure",
+      "Write tests with Vitest and React Testing Library",
+      "Maintain the existing API client pattern in src/api/",
+      "Use TypeScript strict mode",
+      "Follow the existing page routing structure"
+    ],
+    "docker": [
+      "Focus on Dockerfile and docker-compose files",
+      "Maintain multi-stage builds for production",
+      "Keep dev and prod configurations separate",
+      "Use nginx for reverse proxy",
+      "Ensure proper health checks",
+      "Follow security best practices for containers",
+      "Keep image sizes optimized",
+      "Maintain environment-specific compose files"
+    ],
+    "fullstack": [
+      "Coordinate changes across frontend and backend",
+      "Ensure API contracts are maintained",
+      "Review end-to-end integration points",
+      "Manage database schema changes",
+      "Coordinate deployment configurations",
+      "Ensure consistent error handling across layers",
+      "Maintain API documentation",
+      "Review cross-cutting concerns like auth, logging, monitoring",
+      "Orchestrate specialized agents for specific tasks",
+      "Summarize context before passing to other agents",
+      "Delegate to specialist agents when appropriate"
+    ],
+    "testing": [
+      "Write unit tests for backend (JUnit, Mockito)",
+      "Write component tests for frontend (Vitest, RTL)",
+      "Create integration tests for API endpoints",
+      "Maintain test coverage above 80%",
+      "Follow test naming conventions",
+      "Use test containers for integration tests",
+      "Create E2E test scenarios",
+      "Review and improve existing tests"
+    ],
+    "devops": [
+      "Manage GitHub Actions workflows",
+      "Maintain docker-compose configurations",
+      "Configure nginx reverse proxy",
+      "Set up monitoring and logging",
+      "Manage environment variables",
+      "Handle secrets securely",
+      "Optimize build pipelines",
+      "Ensure zero-downtime deployments"
+    ],
+    "modelRouting": [
+      "Use cheapest model capable of completing the task",
+      "Upgrade model only if task complexity requires it",
+      "Never use models more expensive than claude-3-haiku-20240307",
+      "Prefer deepseek for standard development tasks",
+      "Use gemini-flash-lite for simple queries and reviews"
+    ],
+    "tokenOptimization": [
+      "Keep responses concise and code-focused",
+      "Avoid repeating context already shared",
+      "Summarize long conversations before context exceeds 5000 tokens",
+      "Use references to previous context instead of repeating",
+      "Prefer diffs over full file contents when possible"
+    ]
+  }
+}

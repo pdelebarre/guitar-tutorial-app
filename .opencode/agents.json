@@ -1,5 +1,10 @@
 {
   "$schema": "https://opencode.ai/schema/agents.json",
+  "imports": [
+    "./models.json",
+    "./skills.json",
+    "./rules.json"
+  ],
   "sharedContext": true,
   "contextSharing": {
     "enabled": true,
@@ -11,212 +16,97 @@
     {
       "name": "backend",
       "description": "Spring Boot backend specialist - cost-optimized",
-      "model": "deepseek/deepseek-chat-v3-0324",
-      "fallbackModels": [
-        "anthropic/claude-3-haiku-20240307",
-        "google/gemini-2.0-flash-lite-preview-02-05"
-      ],
-      "tools": {
-        "allowed": ["github_mcp_direct:*"]
-      },
-      "rules": [
-        "Focus on Java/Spring Boot code in backend/ directory",
-        "Use Maven for dependency management",
-        "Follow Spring Boot best practices",
-        "Maintain REST API conventions",
-        "Write unit tests with JUnit and Mockito",
-        "Use the existing pom.xml structure",
-        "Keep database migrations in src/main/resources/db/migration",
-        "Follow the existing package structure: com.guitartutorial.backend.*",
-        "Be concise in explanations - prefer code over prose",
-        "Share relevant context with other agents via sharedContext",
-        "Use cheapest capable model for the task"
-      ],
+      "model": "${models.standard}",
+      "fallbackModels": ["${models.complex}", "${models.cheapest}"],
+      "skills": ["java", "spring-boot", "maven", "junit", "mockito", "rest-api"],
+      "rules": ["${rules.concise}", "${rules.shareContext}", "${rules.costOptimized}", "${rules.backend}"],
       "taskRouting": {
-        "simple": "google/gemini-2.0-flash-lite-preview-02-05",
-        "standard": "deepseek/deepseek-chat-v3-0324",
-        "complex": "anthropic/claude-3-haiku-20240307"
+        "simple": "${models.cheapest}",
+        "standard": "${models.standard}",
+        "complex": "${models.complex}"
       }
     },
     {
       "name": "frontend",
       "description": "React/TypeScript frontend specialist - cost-optimized",
-      "model": "deepseek/deepseek-chat-v3-0324",
-      "fallbackModels": [
-        "anthropic/claude-3-haiku-20240307",
-        "google/gemini-2.0-flash-lite-preview-02-05"
-      ],
-      "tools": {
-        "allowed": ["github_mcp_direct:*"]
-      },
-      "rules": [
-        "Focus on React/TypeScript code in frontend/src/ directory",
-        "Use Vite for build and dev server",
-        "Follow Tailwind CSS conventions for styling",
-        "Use the existing component structure",
-        "Write tests with Vitest and React Testing Library",
-        "Maintain the existing API client pattern in src/api/",
-        "Use TypeScript strict mode",
-        "Follow the existing page routing structure",
-        "Be concise in explanations - prefer code over prose",
-        "Share relevant context with other agents via sharedContext",
-        "Use cheapest capable model for the task"
-      ],
+      "model": "${models.standard}",
+      "fallbackModels": ["${models.complex}", "${models.cheapest}"],
+      "skills": ["react", "typescript", "vite", "tailwind", "vitest", "testing-library"],
+      "rules": ["${rules.concise}", "${rules.shareContext}", "${rules.costOptimized}", "${rules.frontend}"],
       "taskRouting": {
-        "simple": "google/gemini-2.0-flash-lite-preview-02-05",
-        "standard": "deepseek/deepseek-chat-v3-0324",
-        "complex": "anthropic/claude-3-haiku-20240307"
+        "simple": "${models.cheapest}",
+        "standard": "${models.standard}",
+        "complex": "${models.complex}"
       }
     },
     {
       "name": "docker",
       "description": "Docker and containerization specialist - cost-optimized",
-      "model": "deepseek/deepseek-chat-v3-0324",
-      "fallbackModels": [
-        "anthropic/claude-3-haiku-20240307",
-        "google/gemini-2.0-flash-lite-preview-02-05"
-      ],
-      "tools": {
-        "allowed": ["github_mcp_direct:*"]
-      },
-      "rules": [
-        "Focus on Dockerfile and docker-compose files",
-        "Maintain multi-stage builds for production",
-        "Keep dev and prod configurations separate",
-        "Use nginx for reverse proxy",
-        "Ensure proper health checks",
-        "Follow security best practices for containers",
-        "Keep image sizes optimized",
-        "Maintain environment-specific compose files",
-        "Be concise in explanations - prefer code over prose",
-        "Share relevant context with other agents via sharedContext",
-        "Use cheapest capable model for the task"
-      ],
+      "model": "${models.standard}",
+      "fallbackModels": ["${models.complex}", "${models.cheapest}"],
+      "skills": ["docker", "docker-compose", "nginx", "containers", "security"],
+      "rules": ["${rules.concise}", "${rules.shareContext}", "${rules.costOptimized}", "${rules.docker}"],
       "taskRouting": {
-        "simple": "google/gemini-2.0-flash-lite-preview-02-05",
-        "standard": "deepseek/deepseek-chat-v3-0324",
-        "complex": "anthropic/claude-3-haiku-20240307"
+        "simple": "${models.cheapest}",
+        "standard": "${models.standard}",
+        "complex": "${models.complex}"
       }
     },
     {
       "name": "fullstack",
       "description": "Full-stack coordinator - cost-optimized orchestrator",
-      "model": "deepseek/deepseek-chat-v3-0324",
-      "fallbackModels": [
-        "anthropic/claude-3-haiku-20240307",
-        "google/gemini-2.0-flash-lite-preview-02-05"
-      ],
-      "tools": {
-        "allowed": ["github_mcp_direct:*"]
-      },
-      "rules": [
-        "Coordinate changes across frontend and backend",
-        "Ensure API contracts are maintained",
-        "Review end-to-end integration points",
-        "Manage database schema changes",
-        "Coordinate deployment configurations",
-        "Ensure consistent error handling across layers",
-        "Maintain API documentation",
-        "Review cross-cutting concerns like auth, logging, monitoring",
-        "Orchestrate specialized agents for specific tasks",
-        "Summarize context before passing to other agents",
-        "Use cheapest capable model for the task",
-        "Delegate to specialist agents when appropriate"
-      ],
+      "model": "${models.standard}",
+      "fallbackModels": ["${models.complex}", "${models.cheapest}"],
+      "skills": ["fullstack", "architecture", "api-design", "integration", "orchestration"],
+      "rules": ["${rules.concise}", "${rules.shareContext}", "${rules.costOptimized}", "${rules.fullstack}"],
       "taskRouting": {
-        "simple": "google/gemini-2.0-flash-lite-preview-02-05",
-        "standard": "deepseek/deepseek-chat-v3-0324",
-        "complex": "anthropic/claude-3-haiku-20240307",
-        "orchestration": "deepseek/deepseek-chat-v3-0324"
+        "simple": "${models.cheapest}",
+        "standard": "${models.standard}",
+        "complex": "${models.complex}",
+        "orchestration": "${models.standard}"
       }
     },
     {
       "name": "testing",
       "description": "Testing and QA specialist - cost-optimized",
-      "model": "deepseek/deepseek-chat-v3-0324",
-      "fallbackModels": [
-        "anthropic/claude-3-haiku-20240307",
-        "google/gemini-2.0-flash-lite-preview-02-05"
-      ],
-      "tools": {
-        "allowed": ["github_mcp_direct:*"]
-      },
-      "rules": [
-        "Write unit tests for backend (JUnit, Mockito)",
-        "Write component tests for frontend (Vitest, RTL)",
-        "Create integration tests for API endpoints",
-        "Maintain test coverage above 80%",
-        "Follow test naming conventions",
-        "Use test containers for integration tests",
-        "Create E2E test scenarios",
-        "Review and improve existing tests",
-        "Be concise in explanations - prefer code over prose",
-        "Share relevant context with other agents via sharedContext",
-        "Use cheapest capable model for the task"
-      ],
+      "model": "${models.standard}",
+      "fallbackModels": ["${models.complex}", "${models.cheapest}"],
+      "skills": ["junit", "mockito", "vitest", "testing-library", "integration-testing", "e2e"],
+      "rules": ["${rules.concise}", "${rules.shareContext}", "${rules.costOptimized}", "${rules.testing}"],
       "taskRouting": {
-        "simple": "google/gemini-2.0-flash-lite-preview-02-05",
-        "standard": "deepseek/deepseek-chat-v3-0324",
-        "complex": "anthropic/claude-3-haiku-20240307"
+        "simple": "${models.cheapest}",
+        "standard": "${models.standard}",
+        "complex": "${models.complex}"
       }
     },
     {
       "name": "devops",
       "description": "CI/CD and deployment specialist - cost-optimized",
-      "model": "deepseek/deepseek-chat-v3-0324",
-      "fallbackModels": [
-        "anthropic/claude-3-haiku-20240307",
-        "google/gemini-2.0-flash-lite-preview-02-05"
-      ],
-      "tools": {
-        "allowed": ["github_mcp_direct:*"]
-      },
-      "rules": [
-        "Manage GitHub Actions workflows",
-        "Maintain docker-compose configurations",
-        "Configure nginx reverse proxy",
-        "Set up monitoring and logging",
-        "Manage environment variables",
-        "Handle secrets securely",
-        "Optimize build pipelines",
-        "Ensure zero-downtime deployments",
-        "Be concise in explanations - prefer code over prose",
-        "Share relevant context with other agents via sharedContext",
-        "Use cheapest capable model for the task"
-      ],
+      "model": "${models.standard}",
+      "fallbackModels": ["${models.complex}", "${models.cheapest}"],
+      "skills": ["github-actions", "docker", "nginx", "ci-cd", "monitoring", "security"],
+      "rules": ["${rules.concise}", "${rules.shareContext}", "${rules.costOptimized}", "${rules.devops}"],
       "taskRouting": {
-        "simple": "google/gemini-2.0-flash-lite-preview-02-05",
-        "standard": "deepseek/deepseek-chat-v3-0324",
-        "complex": "anthropic/claude-3-haiku-20240307"
+        "simple": "${models.cheapest}",
+        "standard": "${models.standard}",
+        "complex": "${models.complex}"
       }
     }
   ],
   "modelRouting": {
     "strategy": "cost-optimized",
     "models": {
-      "cheapest": "google/gemini-2.0-flash-lite-preview-02-05",
-      "standard": "deepseek/deepseek-chat-v3-0324",
-      "complex": "anthropic/claude-3-haiku-20240307"
+      "cheapest": "${models.cheapest}",
+      "standard": "${models.standard}",
+      "complex": "${models.complex}"
     },
-    "rules": [
-      "Use cheapest model capable of completing the task",
-      "Upgrade model only if task complexity requires it",
-      "Never use models more expensive than claude-3-haiku-20240307",
-      "Prefer deepseek for standard development tasks",
-      "Use gemini-flash-lite for simple queries and reviews"
-    ]
+    "rules": ["${rules.modelRouting}"]
   },
   "tokenOptimization": {
     "enabled": true,
     "maxTokensPerRequest": 4000,
     "contextCompression": true,
     "summaryStrategy": "progressive",
-    "rules": [
-      "Keep responses concise and code-focused",
-      "Avoid repeating context already shared",
-      "Summarize long conversations before context exceeds 5000 tokens",
-      "Use references to previous context instead of repeating",
-      "Prefer diffs over full file contents when possible"
-    ]
+    "rules": ["${rules.tokenOptimization}"]
   }
 }

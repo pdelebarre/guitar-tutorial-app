@@ -1,0 +1,27 @@
+{
+  "$schema": "https://opencode.ai/schema/models.json",
+  "models": {
+    "cheapest": "google/gemini-2.0-flash-lite-preview-02-05",
+    "standard": "deepseek/deepseek-chat-v3-0324",
+    "complex": "anthropic/claude-3-haiku-20240307"
+  },
+  "constraints": {
+    "maxCostPerToken": 0.0001,
+    "neverUseMoreExpensiveThan": "anthropic/claude-3-haiku-20240307"
+  },
+  "routing": {
+    "strategy": "cost-optimized",
+    "rules": [
+      "Use cheapest model capable of completing the task",
+      "Upgrade model only if task complexity requires it",
+      "Never use models more expensive than claude-3-haiku-20240307",
+      "Prefer deepseek for standard development tasks",
+      "Use gemini-flash-lite for simple queries and reviews"
+    ]
+  },
+  "fallbacks": {
+    "order": ["deepseek/deepseek-chat-v3-0324", "google/gemini-2.0-flash-lite-preview-02-05", "anthropic/claude-3-haiku-20240307"],
+    "onUnavailable": true,
+    "onRateLimit": true
+  }
+}
