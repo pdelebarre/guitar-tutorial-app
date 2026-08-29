@@ -1,0 +1,54 @@
+{
+  "$schema": "https://opencode.ai/schema/rules.json",
+  "description": "Docker and containerization rules",
+  "rules": [
+    {
+      "id": "docker-focus",
+      "priority": "high",
+      "description": "Focus on Dockerfile and docker-compose files",
+      "instruction": "Maintain Dockerfiles in backend/ and frontend/. Update docker-compose files at root level."
+    },
+    {
+      "id": "multi-stage-builds",
+      "priority": "high",
+      "description": "Maintain multi-stage builds for production",
+      "instruction": "Use separate build and runtime stages. Copy only necessary artifacts. Minimize final image size."
+    },
+    {
+      "id": "environment-separation",
+      "priority": "high",
+      "description": "Keep dev and prod configurations separate",
+      "instruction": "Use docker-compose.yml for dev, docker-compose.prod.yml for production. Never mix configurations."
+    },
+    {
+      "id": "nginx-proxy",
+      "priority": "high",
+      "description": "Use nginx for reverse proxy",
+      "instruction": "Configure nginx in nginx/ directory. Set up proper proxy headers. Enable compression and caching."
+    },
+    {
+      "id": "health-checks",
+      "priority": "high",
+      "description": "Ensure proper health checks",
+      "instruction": "Add HEALTHCHECK instructions to Dockerfiles. Configure health checks in compose files."
+    },
+    {
+      "id": "container-security",
+      "priority": "high",
+      "description": "Follow security best practices for containers",
+      "instruction": "Use non-root users. Scan for vulnerabilities. Use specific image versions. Minimize attack surface."
+    },
+    {
+      "id": "image-optimization",
+      "priority": "medium",
+      "description": "Keep image sizes optimized",
+      "instruction": "Use alpine or slim base images. Multi-stage builds. Clean up in same layer. Order instructions by change frequency."
+    },
+    {
+      "id": "compose-files",
+      "priority": "medium",
+      "description": "Maintain environment-specific compose files",
+      "instruction": "Keep docker-compose.yml, docker-compose.prod.yml, docker-compose.nas.yml synchronized for common services."
+    }
+  ]
+}

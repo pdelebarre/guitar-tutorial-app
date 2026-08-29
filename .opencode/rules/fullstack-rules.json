@@ -1,0 +1,66 @@
+{
+  "$schema": "https://opencode.ai/schema/rules.json",
+  "description": "Full-stack coordination rules",
+  "rules": [
+    {
+      "id": "cross-layer-coordination",
+      "priority": "high",
+      "description": "Coordinate changes across frontend and backend",
+      "instruction": "When making changes, update both frontend and backend as needed. Ensure API contracts are maintained."
+    },
+    {
+      "id": "api-contracts",
+      "priority": "high",
+      "description": "Ensure API contracts are maintained",
+      "instruction": "Document API changes. Update TypeScript types to match backend responses. Test end-to-end flows."
+    },
+    {
+      "id": "integration-points",
+      "priority": "high",
+      "description": "Review end-to-end integration points",
+      "instruction": "Test API calls from frontend. Verify error handling. Check loading states. Ensure proper data flow."
+    },
+    {
+      "id": "database-coordination",
+      "priority": "high",
+      "description": "Manage database schema changes",
+      "instruction": "Coordinate schema changes with API updates. Update migrations. Test with real data."
+    },
+    {
+      "id": "deployment-config",
+      "priority": "medium",
+      "description": "Coordinate deployment configurations",
+      "instruction": "Ensure frontend and backend versions are compatible. Update compose files together."
+    },
+    {
+      "id": "error-handling",
+      "priority": "high",
+      "description": "Ensure consistent error handling across layers",
+      "instruction": "Backend returns structured errors. Frontend displays user-friendly messages. Log errors appropriately."
+    },
+    {
+      "id": "api-documentation",
+      "priority": "medium",
+      "description": "Maintain API documentation",
+      "instruction": "Update OpenAPI/Swagger docs. Keep README current. Document breaking changes."
+    },
+    {
+      "id": "cross-cutting-concerns",
+      "priority": "high",
+      "description": "Review cross-cutting concerns like auth, logging, monitoring",
+      "instruction": "Ensure auth is consistent across layers. Add logging for debugging. Monitor key metrics."
+    },
+    {
+      "id": "orchestration",
+      "priority": "high",
+      "description": "Orchestrate specialized agents for specific tasks",
+      "instruction": "Delegate to backend, frontend, testing agents for specialized work. Aggregate results."
+    },
+    {
+      "id": "context-summarization",
+      "priority": "medium",
+      "description": "Summarize context before passing to other agents",
+      "instruction": "Create concise summaries of decisions and changes. Highlight action items for other agents."
+    }
+  ]
+}

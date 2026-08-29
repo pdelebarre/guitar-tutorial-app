@@ -1,0 +1,54 @@
+{
+  "$schema": "https://opencode.ai/schema/rules.json",
+  "description": "DevOps and CI/CD rules",
+  "rules": [
+    {
+      "id": "github-actions",
+      "priority": "high",
+      "description": "Manage GitHub Actions workflows",
+      "instruction": "Maintain workflows in .github/workflows/. Use reusable workflows. Cache dependencies."
+    },
+    {
+      "id": "docker-compose-management",
+      "priority": "high",
+      "description": "Maintain docker-compose configurations",
+      "instruction": "Keep compose files DRY. Use environment variables. Document service dependencies."
+    },
+    {
+      "id": "nginx-configuration",
+      "priority": "high",
+      "description": "Configure nginx reverse proxy",
+      "instruction": "Optimize nginx config. Enable SSL. Configure caching headers. Set up proper proxying."
+    },
+    {
+      "id": "monitoring-setup",
+      "priority": "high",
+      "description": "Set up monitoring and logging",
+      "instruction": "Configure application logs. Set up metrics collection. Create dashboards. Define alerts."
+    },
+    {
+      "id": "environment-variables",
+      "priority": "high",
+      "description": "Manage environment variables",
+      "instruction": "Use .env files for local dev. Use secrets in CI/CD. Document required variables."
+    },
+    {
+      "id": "secrets-management",
+      "priority": "high",
+      "description": "Handle secrets securely",
+      "instruction": "Never commit secrets. Use GitHub secrets. Rotate credentials regularly. Use secret scanning."
+    },
+    {
+      "id": "pipeline-optimization",
+      "priority": "medium",
+      "description": "Optimize build pipelines",
+      "instruction": "Parallelize jobs. Cache build artifacts. Use matrix builds. Minimize CI time."
+    },
+    {
+      "id": "zero-downtime",
+      "priority": "high",
+      "description": "Ensure zero-downtime deployments",
+      "instruction": "Use rolling updates. Health check before switching. Have rollback plan."
+    }
+  ]
+}

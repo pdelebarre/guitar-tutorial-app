@@ -1,0 +1,54 @@
+{
+  "$schema": "https://opencode.ai/schema/rules.json",
+  "description": "Frontend-specific rules for React/TypeScript development",
+  "rules": [
+    {
+      "id": "frontend-focus",
+      "priority": "high",
+      "description": "Focus on React/TypeScript code in frontend/src/ directory",
+      "instruction": "Work primarily in frontend/src directory. Follow existing component patterns."
+    },
+    {
+      "id": "vite-usage",
+      "priority": "high",
+      "description": "Use Vite for build and dev server",
+      "instruction": "Configure Vite in vite.config.ts. Use Vite plugins for additional functionality."
+    },
+    {
+      "id": "tailwind-styling",
+      "priority": "high",
+      "description": "Follow Tailwind CSS conventions for styling",
+      "instruction": "Use utility classes. Avoid custom CSS when possible. Use Tailwind config for theme customization."
+    },
+    {
+      "id": "component-structure",
+      "priority": "medium",
+      "description": "Use the existing component structure",
+      "instruction": "Place components in src/components. Follow the existing naming and organization patterns."
+    },
+    {
+      "id": "frontend-testing",
+      "priority": "high",
+      "description": "Write tests with Vitest and React Testing Library",
+      "instruction": "Write tests for components and hooks. Use RTL for user-centric tests. Place tests alongside components."
+    },
+    {
+      "id": "api-client-pattern",
+      "priority": "high",
+      "description": "Maintain the existing API client pattern in src/api/",
+      "instruction": "Use the established API client structure. Handle errors consistently. Use TypeScript types for API responses."
+    },
+    {
+      "id": "typescript-strict",
+      "priority": "high",
+      "description": "Use TypeScript strict mode",
+      "instruction": "No any types. Define proper interfaces. Use type inference when possible. Avoid type assertions."
+    },
+    {
+      "id": "routing-structure",
+      "priority": "medium",
+      "description": "Follow the existing page routing structure",
+      "instruction": "Place pages in src/pages. Use the established routing configuration."
+    }
+  ]
+}

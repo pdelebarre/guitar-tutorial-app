@@ -1,140 +1,326 @@
 {
   "$schema": "https://opencode.ai/schema/skills.json",
+  "description": "Shared skills definitions for guitar-tutorial-app agents",
   "skills": {
     "java": {
-      "name": "Java Development",
-      "description": "Java 17+ development, OOP, functional programming, streams",
-      "keywords": ["java", "jdk", "jvm", "spring"]
+      "description": "Java programming language expertise",
+      "level": "expert",
+      "context": [
+        "Java 17+ features",
+        "Object-oriented design",
+        "Functional programming",
+        "Stream API",
+        "Concurrency"
+      ]
     },
     "spring-boot": {
-      "name": "Spring Boot",
-      "description": "Spring Boot 3.x, auto-configuration, starters, actuator",
-      "keywords": ["spring", "spring-boot", "@RestController", "@Service", "@Repository"]
+      "description": "Spring Boot framework expertise",
+      "level": "expert",
+      "context": [
+        "REST APIs",
+        "Dependency injection",
+        "Spring Data JPA",
+        "Spring Security",
+        "Auto-configuration"
+      ]
     },
     "maven": {
-      "name": "Maven Build",
-      "description": "Maven 3.x, pom.xml, dependency management, plugins",
-      "keywords": ["maven", "pom.xml", "mvn", "dependency"]
+      "description": "Maven build tool expertise",
+      "level": "expert",
+      "context": [
+        "POM configuration",
+        "Dependency management",
+        "Build profiles",
+        "Plugins"
+      ]
     },
     "junit": {
-      "name": "JUnit Testing",
-      "description": "JUnit 5, assertions, parameterized tests, extensions",
-      "keywords": ["junit", "@Test", "@BeforeEach", "assertThat"]
+      "description": "JUnit testing framework",
+      "level": "expert",
+      "context": [
+        "JUnit 5",
+        "Parameterized tests",
+        "Test lifecycle",
+        "Assertions"
+      ]
     },
     "mockito": {
-      "name": "Mockito Mocking",
-      "description": "Mockito 5.x, mocking, stubbing, verification",
-      "keywords": ["mockito", "@Mock", "@InjectMocks", "when", "verify"]
+      "description": "Mockito mocking framework",
+      "level": "expert",
+      "context": [
+        "Mock creation",
+        "Stubbing",
+        "Verification",
+        "Argument matchers"
+      ]
     },
     "rest-api": {
-      "name": "REST API Design",
-      "description": "RESTful services, HTTP methods, status codes, OpenAPI",
-      "keywords": ["REST", "HTTP", "@GetMapping", "@PostMapping", "@RequestBody"]
+      "description": "RESTful API design and implementation",
+      "level": "expert",
+      "context": [
+        "HTTP methods",
+        "Status codes",
+        "Request/response design",
+        "Error handling",
+        "API documentation"
+      ]
+    },
+    "database": {
+      "description": "Database design and SQL",
+      "level": "expert",
+      "context": [
+        "Schema design",
+        "SQL queries",
+        "Migrations",
+        "Indexes",
+        "Transactions"
+      ]
     },
     "react": {
-      "name": "React Development",
-      "description": "React 18+, hooks, functional components, context",
-      "keywords": ["react", "useState", "useEffect", "useContext", "JSX"]
+      "description": "React library expertise",
+      "level": "expert",
+      "context": [
+        "Components",
+        "Hooks",
+        "State management",
+        "Context API",
+        "Performance optimization"
+      ]
     },
     "typescript": {
-      "name": "TypeScript",
-      "description": "TypeScript 5.x, types, interfaces, generics, strict mode",
-      "keywords": ["typescript", "interface", "type", "generic", "strict"]
+      "description": "TypeScript language expertise",
+      "level": "expert",
+      "context": [
+        "Type system",
+        "Generics",
+        "Interfaces",
+        "Strict mode",
+        "Type inference"
+      ]
     },
     "vite": {
-      "name": "Vite Build",
-      "description": "Vite 5.x, HMR, build optimization, plugins",
-      "keywords": ["vite", "vite.config", "HMR", "esbuild"]
+      "description": "Vite build tool and dev server",
+      "level": "expert",
+      "context": [
+        "Configuration",
+        "Plugins",
+        "HMR",
+        "Build optimization"
+      ]
     },
     "tailwind": {
-      "name": "Tailwind CSS",
-      "description": "Tailwind CSS 3.x, utility classes, responsive design",
-      "keywords": ["tailwind", "className", "flex", "grid", "responsive"]
+      "description": "Tailwind CSS framework",
+      "level": "expert",
+      "context": [
+        "Utility classes",
+        "Responsive design",
+        "Custom configuration",
+        "Dark mode"
+      ]
     },
     "vitest": {
-      "name": "Vitest Testing",
-      "description": "Vitest, unit testing, snapshot testing, coverage",
-      "keywords": ["vitest", "describe", "it", "expect", "test"]
+      "description": "Vitest testing framework",
+      "level": "expert",
+      "context": [
+        "Unit testing",
+        "Component testing",
+        "Mocking",
+        "Snapshots"
+      ]
     },
-    "testing-library": {
-      "name": "React Testing Library",
-      "description": "RTL, user-event, queries, accessibility testing",
-      "keywords": ["testing-library", "render", "screen", "user-event", "queryBy"]
+    "rtl": {
+      "description": "React Testing Library",
+      "level": "expert",
+      "context": [
+        "Component testing",
+        "User interactions",
+        "Accessibility testing",
+        "Best practices"
+      ]
+    },
+    "frontend-testing": {
+      "description": "Frontend testing strategies",
+      "level": "expert",
+      "context": [
+        "Unit tests",
+        "Integration tests",
+        "E2E tests",
+        "Visual regression"
+      ]
     },
     "docker": {
-      "name": "Docker",
-      "description": "Docker containers, images, multi-stage builds, optimization",
-      "keywords": ["docker", "Dockerfile", "docker-compose", "container"]
+      "description": "Docker containerization",
+      "level": "expert",
+      "context": [
+        "Dockerfiles",
+        "Images",
+        "Containers",
+        "Volumes",
+        "Networks"
+      ]
     },
     "docker-compose": {
-      "name": "Docker Compose",
-      "description": "Compose v2, services, networks, volumes, health checks",
-      "keywords": ["docker-compose", "services", "volumes", "networks"]
+      "description": "Docker Compose orchestration",
+      "level": "expert",
+      "context": [
+        "Service definitions",
+        "Environment variables",
+        "Health checks",
+        "Multi-container apps"
+      ]
     },
     "nginx": {
-      "name": "Nginx",
-      "description": "Nginx configuration, reverse proxy, load balancing",
-      "keywords": ["nginx", "reverse-proxy", "location", "proxy_pass"]
+      "description": "Nginx reverse proxy and web server",
+      "level": "expert",
+      "context": [
+        "Reverse proxy",
+        "Load balancing",
+        "SSL/TLS",
+        "Caching",
+        "Configuration"
+      ]
     },
-    "containers": {
-      "name": "Container Best Practices",
-      "description": "Security, optimization, health checks, minimal images",
-      "keywords": ["security", "optimization", "healthcheck", "alpine"]
+    "containerization": {
+      "description": "Container best practices",
+      "level": "expert",
+      "context": [
+        "Multi-stage builds",
+        "Image optimization",
+        "Security",
+        "Resource limits"
+      ]
     },
-    "security": {
-      "name": "Security",
-      "description": "Container security, secrets management, vulnerability scanning",
-      "keywords": ["security", "secrets", "vulnerability", "scan"]
+    "multi-stage-builds": {
+      "description": "Docker multi-stage build optimization",
+      "level": "expert",
+      "context": [
+        "Build stages",
+        "Artifact copying",
+        "Image size reduction",
+        "Security"
+      ]
     },
     "fullstack": {
-      "name": "Full-Stack Development",
-      "description": "End-to-end development, API contracts, integration",
-      "keywords": ["fullstack", "integration", "API", "end-to-end"]
-    },
-    "architecture": {
-      "name": "Software Architecture",
-      "description": "System design, patterns, microservices, monoliths",
-      "keywords": ["architecture", "design-patterns", "microservices", "monolith"]
+      "description": "Full-stack development coordination",
+      "level": "expert",
+      "context": [
+        "Frontend-backend integration",
+        "API contracts",
+        "Data flow",
+        "Error handling"
+      ]
     },
     "api-design": {
-      "name": "API Design",
-      "description": "REST, GraphQL, gRPC, OpenAPI, versioning",
-      "keywords": ["API", "REST", "GraphQL", "OpenAPI", "versioning"]
+      "description": "API design principles",
+      "level": "expert",
+      "context": [
+        "RESTful design",
+        "Versioning",
+        "Documentation",
+        "Error handling",
+        "Security"
+      ]
     },
     "integration": {
-      "name": "System Integration",
-      "description": "API integration, message queues, event-driven architecture",
-      "keywords": ["integration", "messaging", "events", "webhooks"]
+      "description": "System integration expertise",
+      "level": "expert",
+      "context": [
+        "API integration",
+        "Data synchronization",
+        "Error handling",
+        "Monitoring"
+      ]
     },
     "orchestration": {
-      "name": "Agent Orchestration",
-      "description": "Coordinating multiple agents, task delegation, context management",
-      "keywords": ["orchestration", "coordination", "delegation", "multi-agent"]
+      "description": "Multi-agent orchestration",
+      "level": "expert",
+      "context": [
+        "Task delegation",
+        "Context management",
+        "Workflow coordination",
+        "Result aggregation"
+      ]
+    },
+    "architecture": {
+      "description": "Software architecture",
+      "level": "expert",
+      "context": [
+        "Design patterns",
+        "System design",
+        "Scalability",
+        "Maintainability"
+      ]
+    },
+    "testing": {
+      "description": "Testing strategies and best practices",
+      "level": "expert",
+      "context": [
+        "Test pyramid",
+        "TDD",
+        "Test coverage",
+        "Test organization"
+      ]
     },
     "integration-testing": {
-      "name": "Integration Testing",
-      "description": "Test containers, API testing, database testing",
-      "keywords": ["integration", "testcontainers", "@SpringBootTest", "API-test"]
+      "description": "Integration testing expertise",
+      "level": "expert",
+      "context": [
+        "Test containers",
+        "API testing",
+        "Database testing",
+        "Service integration"
+      ]
     },
-    "e2e": {
-      "name": "End-to-End Testing",
-      "description": "E2E scenarios, user flows, regression testing",
-      "keywords": ["e2e", "end-to-end", "cypress", "playwright", "user-flow"]
-    },
-    "github-actions": {
-      "name": "GitHub Actions",
-      "description": "CI/CD workflows, runners, secrets, deployment",
-      "keywords": ["github-actions", "workflow", "CI", "CD", "runner"]
+    "e2e-testing": {
+      "description": "End-to-end testing",
+      "level": "expert",
+      "context": [
+        "User workflows",
+        "Cross-browser testing",
+        "Performance testing",
+        "Visual testing"
+      ]
     },
     "ci-cd": {
-      "name": "CI/CD",
-      "description": "Continuous integration and deployment pipelines",
-      "keywords": ["CI", "CD", "pipeline", "deployment", "automation"]
+      "description": "CI/CD pipeline design",
+      "level": "expert",
+      "context": [
+        "Pipeline stages",
+        "Automation",
+        "Artifact management",
+        "Deployment strategies"
+      ]
+    },
+    "github-actions": {
+      "description": "GitHub Actions workflows",
+      "level": "expert",
+      "context": [
+        "Workflow definition",
+        "Actions",
+        "Secrets",
+        "Matrix builds",
+        "Caching"
+      ]
     },
     "monitoring": {
-      "name": "Monitoring & Observability",
-      "description": "Logging, metrics, tracing, alerting",
-      "keywords": ["monitoring", "logging", "metrics", "tracing", "alerting"]
+      "description": "Application monitoring and observability",
+      "level": "expert",
+      "context": [
+        "Logging",
+        "Metrics",
+        "Tracing",
+        "Alerting"
+      ]
+    },
+    "deployment": {
+      "description": "Deployment strategies",
+      "level": "expert",
+      "context": [
+        "Blue-green",
+        "Canary",
+        "Rolling updates",
+        "Zero-downtime"
+      ]
     }
   }
 }

@@ -1,113 +1,145 @@
 {
   "$schema": "https://opencode.ai/schema/agents.json",
+  "description": "OpenCode agents for guitar-tutorial-app - modular configuration",
+  "sharedContext": true,
+  "contextSharing": {
+    "enabled": true,
+    "strategy": "progressive",
+    "maxContextTokens": 8000,
+    "summaryThreshold": 5000
+  },
+  "imports": [
+    "./skills.json",
+    "./rules/global-rules.json",
+    "./model-routing.json"
+  ],
   "agents": [
     {
       "name": "backend",
-      "description": "Spring Boot backend specialist for guitar-tutorial-app",
-      "model": "anthropic/claude-sonnet-4-20250514",
+      "description": "Spring Boot backend specialist - cost-optimized",
+      "model": "deepseek/deepseek-chat-v3-0324",
+      "fallbackModels": [
+        "anthropic/claude-3-haiku-20240307",
+        "google/gemini-2.0-flash-lite-preview-02-05"
+      ],
       "tools": {
         "allowed": ["github_mcp_direct:*"]
       },
+      "skills": ["java", "spring-boot", "maven", "junit", "mockito", "rest-api", "database"],
       "rules": [
-        "Focus on Java/Spring Boot code in backend/ directory",
-        "Use Maven for dependency management",
-        "Follow Spring Boot best practices",
-        "Maintain REST API conventions",
-        "Write unit tests with JUnit and Mockito",
-        "Use the existing pom.xml structure",
-        "Keep database migrations in src/main/resources/db/migration",
-        "Follow the existing package structure: com.guitartutorial.backend.*"
-      ]
+        "./rules/backend-rules.json"
+      ],
+      "taskRouting": {
+        "simple": "google/gemini-2.0-flash-lite-preview-02-05",
+        "standard": "deepseek/deepseek-chat-v3-0324",
+        "complex": "anthropic/claude-3-haiku-20240307"
+      }
     },
     {
       "name": "frontend",
-      "description": "React/TypeScript frontend specialist for guitar-tutorial-app",
-      "model": "anthropic/claude-sonnet-4-20250514",
+      "description": "React/TypeScript frontend specialist - cost-optimized",
+      "model": "deepseek/deepseek-chat-v3-0324",
+      "fallbackModels": [
+        "anthropic/claude-3-haiku-20240307",
+        "google/gemini-2.0-flash-lite-preview-02-05"
+      ],
       "tools": {
         "allowed": ["github_mcp_direct:*"]
       },
+      "skills": ["react", "typescript", "vite", "tailwind", "vitest", "rtl", "frontend-testing"],
       "rules": [
-        "Focus on React/TypeScript code in frontend/src/ directory",
-        "Use Vite for build and dev server",
-        "Follow Tailwind CSS conventions for styling",
-        "Use the existing component structure",
-        "Write tests with Vitest and React Testing Library",
-        "Maintain the existing API client pattern in src/api/",
-        "Use TypeScript strict mode",
-        "Follow the existing page routing structure"
-      ]
+        "./rules/frontend-rules.json"
+      ],
+      "taskRouting": {
+        "simple": "google/gemini-2.0-flash-lite-preview-02-05",
+        "standard": "deepseek/deepseek-chat-v3-0324",
+        "complex": "anthropic/claude-3-haiku-20240307"
+      }
     },
     {
       "name": "docker",
-      "description": "Docker and containerization specialist",
-      "model": "anthropic/claude-sonnet-4-20250514",
+      "description": "Docker and containerization specialist - cost-optimized",
+      "model": "deepseek/deepseek-chat-v3-0324",
+      "fallbackModels": [
+        "anthropic/claude-3-haiku-20240307",
+        "google/gemini-2.0-flash-lite-preview-02-05"
+      ],
       "tools": {
         "allowed": ["github_mcp_direct:*"]
       },
+      "skills": ["docker", "docker-compose", "nginx", "containerization", "multi-stage-builds"],
       "rules": [
-        "Focus on Dockerfile and docker-compose files",
-        "Maintain multi-stage builds for production",
-        "Keep dev and prod configurations separate",
-        "Use nginx for reverse proxy",
-        "Ensure proper health checks",
-        "Follow security best practices for containers",
-        "Keep image sizes optimized",
-        "Maintain environment-specific compose files"
-      ]
+        "./rules/docker-rules.json"
+      ],
+      "taskRouting": {
+        "simple": "google/gemini-2.0-flash-lite-preview-02-05",
+        "standard": "deepseek/deepseek-chat-v3-0324",
+        "complex": "anthropic/claude-3-haiku-20240307"
+      }
     },
     {
       "name": "fullstack",
-      "description": "Full-stack coordinator for guitar-tutorial-app",
-      "model": "anthropic/claude-sonnet-4-20250514",
+      "description": "Full-stack coordinator - cost-optimized orchestrator",
+      "model": "deepseek/deepseek-chat-v3-0324",
+      "fallbackModels": [
+        "anthropic/claude-3-haiku-20240307",
+        "google/gemini-2.0-flash-lite-preview-02-05"
+      ],
       "tools": {
         "allowed": ["github_mcp_direct:*"]
       },
+      "skills": ["fullstack", "api-design", "integration", "orchestration", "architecture"],
       "rules": [
-        "Coordinate changes across frontend and backend",
-        "Ensure API contracts are maintained",
-        "Review end-to-end integration points",
-        "Manage database schema changes",
-        "Coordinate deployment configurations",
-        "Ensure consistent error handling across layers",
-        "Maintain API documentation",
-        "Review cross-cutting concerns like auth, logging, monitoring"
-      ]
+        "./rules/fullstack-rules.json"
+      ],
+      "taskRouting": {
+        "simple": "google/gemini-2.0-flash-lite-preview-02-05",
+        "standard": "deepseek/deepseek-chat-v3-0324",
+        "complex": "anthropic/claude-3-haiku-20240307",
+        "orchestration": "deepseek/deepseek-chat-v3-0324"
+      }
     },
     {
       "name": "testing",
-      "description": "Testing and quality assurance specialist",
-      "model": "anthropic/claude-sonnet-4-20250514",
+      "description": "Testing and QA specialist - cost-optimized",
+      "model": "deepseek/deepseek-chat-v3-0324",
+      "fallbackModels": [
+        "anthropic/claude-3-haiku-20240307",
+        "google/gemini-2.0-flash-lite-preview-02-05"
+      ],
       "tools": {
         "allowed": ["github_mcp_direct:*"]
       },
+      "skills": ["testing", "junit", "mockito", "vitest", "rtl", "integration-testing", "e2e-testing"],
       "rules": [
-        "Write unit tests for backend (JUnit, Mockito)",
-        "Write component tests for frontend (Vitest, RTL)",
-        "Create integration tests for API endpoints",
-        "Maintain test coverage above 80%",
-        "Follow test naming conventions",
-        "Use test containers for integration tests",
-        "Create E2E test scenarios",
-        "Review and improve existing tests"
-      ]
+        "./rules/testing-rules.json"
+      ],
+      "taskRouting": {
+        "simple": "google/gemini-2.0-flash-lite-preview-02-05",
+        "standard": "deepseek/deepseek-chat-v3-0324",
+        "complex": "anthropic/claude-3-haiku-20240307"
+      }
     },
     {
       "name": "devops",
-      "description": "CI/CD and deployment specialist",
-      "model": "anthropic/claude-sonnet-4-20250514",
+      "description": "CI/CD and deployment specialist - cost-optimized",
+      "model": "deepseek/deepseek-chat-v3-0324",
+      "fallbackModels": [
+        "anthropic/claude-3-haiku-20240307",
+        "google/gemini-2.0-flash-lite-preview-02-05"
+      ],
       "tools": {
         "allowed": ["github_mcp_direct:*"]
       },
+      "skills": ["ci-cd", "github-actions", "docker", "nginx", "monitoring", "deployment"],
       "rules": [
-        "Manage GitHub Actions workflows",
-        "Maintain docker-compose configurations",
-        "Configure nginx reverse proxy",
-        "Set up monitoring and logging",
-        "Manage environment variables",
-        "Handle secrets securely",
-        "Optimize build pipelines",
-        "Ensure zero-downtime deployments"
-      ]
+        "./rules/devops-rules.json"
+      ],
+      "taskRouting": {
+        "simple": "google/gemini-2.0-flash-lite-preview-02-05",
+        "standard": "deepseek/deepseek-chat-v3-0324",
+        "complex": "anthropic/claude-3-haiku-20240307"
+      }
     }
   ]
 }

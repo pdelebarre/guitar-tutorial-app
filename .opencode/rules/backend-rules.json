@@ -1,0 +1,48 @@
+{
+  "$schema": "https://opencode.ai/schema/rules.json",
+  "description": "Backend-specific rules for Spring Boot development",
+  "rules": [
+    {
+      "id": "backend-focus",
+      "priority": "high",
+      "description": "Focus on Java/Spring Boot code in backend/ directory",
+      "instruction": "Work primarily in backend/src/main/java and backend/src/main/resources directories."
+    },
+    {
+      "id": "maven-management",
+      "priority": "high",
+      "description": "Use Maven for dependency management",
+      "instruction": "Add dependencies to pom.xml. Use existing dependency versions when possible. Run mvn validate after changes."
+    },
+    {
+      "id": "spring-best-practices",
+      "priority": "high",
+      "description": "Follow Spring Boot best practices",
+      "instruction": "Use constructor injection. Leverage Spring Boot auto-configuration. Follow Spring coding conventions."
+    },
+    {
+      "id": "rest-conventions",
+      "priority": "high",
+      "description": "Maintain REST API conventions",
+      "instruction": "Use proper HTTP methods and status codes. Follow RESTful URL patterns. Return consistent error formats."
+    },
+    {
+      "id": "testing-requirement",
+      "priority": "high",
+      "description": "Write unit tests with JUnit and Mockito",
+      "instruction": "Write tests for all new code. Use Mockito for mocking. Aim for >80% coverage. Place tests in src/test/java."
+    },
+    {
+      "id": "package-structure",
+      "priority": "medium",
+      "description": "Follow the existing package structure: com.guitartutorial.backend.*",
+      "instruction": "Organize code by feature within the existing package hierarchy. Keep related classes together."
+    },
+    {
+      "id": "database-migrations",
+      "priority": "high",
+      "description": "Keep database migrations in src/main/resources/db/migration",
+      "instruction": "Use Flyway migrations. Name migrations with version prefix. Write reversible migrations when possible."
+    }
+  ]
+}

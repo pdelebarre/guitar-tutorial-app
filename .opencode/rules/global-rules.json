@@ -1,0 +1,42 @@
+{
+  "$schema": "https://opencode.ai/schema/rules.json",
+  "description": "Global rules applied to all agents",
+  "rules": [
+    {
+      "id": "concise-communication",
+      "priority": "high",
+      "description": "Be concise in explanations - prefer code over prose",
+      "instruction": "Keep explanations brief and focused. Show code examples instead of lengthy descriptions. Use bullet points for multiple items."
+    },
+    {
+      "id": "context-sharing",
+      "priority": "high",
+      "description": "Share relevant context with other agents via sharedContext",
+      "instruction": "When completing tasks, identify and share information that other agents might need. Use progressive summarization."
+    },
+    {
+      "id": "cost-optimization",
+      "priority": "high",
+      "description": "Use cheapest capable model for the task",
+      "instruction": "Always start with the cheapest model (gemini-flash-lite). Only upgrade to deepseek or haiku if the task complexity requires it. Never exceed haiku pricing."
+    },
+    {
+      "id": "token-efficiency",
+      "priority": "medium",
+      "description": "Optimize token usage",
+      "instruction": "Avoid repeating context. Use references instead of full content. Prefer diffs over complete files. Summarize long conversations."
+    },
+    {
+      "id": "code-quality",
+      "priority": "medium",
+      "description": "Maintain code quality standards",
+      "instruction": "Follow existing code style. Write tests for new code. Use meaningful names. Add comments only when necessary."
+    },
+    {
+      "id": "security-first",
+      "priority": "high",
+      "description": "Prioritize security in all changes",
+      "instruction": "Never commit secrets. Validate inputs. Use parameterized queries. Follow security best practices for the technology stack."
+    }
+  ]
+}

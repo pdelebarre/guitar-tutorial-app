@@ -1,0 +1,100 @@
+{
+  "$schema": "https://opencode.ai/schema/model-routing.json",
+  "description": "Model routing configuration for cost-optimized LLM selection",
+  "strategy": "cost-optimized",
+  "models": {
+    "cheapest": {
+      "id": "google/gemini-2.0-flash-lite-preview-02-05",
+      "useCase": "Simple queries, code reviews, quick fixes, documentation",
+      "maxTokens": 4000,
+      "priority": 1
+    },
+    "standard": {
+      "id": "deepseek/deepseek-chat-v3-0324",
+      "useCase": "Most development tasks, code generation, refactoring",
+      "maxTokens": 8000,
+      "priority": 2
+    },
+    "complex": {
+      "id": "anthropic/claude-3-haiku-20240307",
+      "useCase": "Complex refactoring, architecture decisions, debugging difficult issues",
+      "maxTokens": 8000,
+      "priority": 3
+    }
+  },
+  "routingRules": [
+    {
+      "id": "cheapest-first",
+      "priority": "critical",
+      "description": "Use cheapest model capable of completing the task",
+      "instruction": "Start with gemini-flash-lite. Only upgrade if task fails or requires more capability."
+    },
+    {
+      "id": "upgrade-criteria",
+      "priority": "high",
+      "description": "Upgrade model only if task complexity requires it",
+      "instruction": "Upgrade to deepseek for: complex logic, multi-file changes, test generation. Upgrade to haiku for: architecture, difficult debugging, complex refactoring."
+    },
+    {
+      "id": "cost-cap",
+      "priority": "critical",
+      "description": "Never use models more expensive than claude-3-haiku-20240307",
+      "instruction": "Reject any request for claude-sonnet, claude-opus, gpt-4, or other premium models. Stay within haiku pricing tier."
+    },
+    {
+      "id": "deepseek-preference",
+      "priority": "high",
+      "description": "Prefer deepseek for standard development tasks",
+      "instruction": "For code generation, refactoring, and standard development work, use deepseek as the default after gemini."
+    },
+    {
+      "id": "gemini-for-simple",
+      "priority": "high",
+      "description": "Use gemini-flash-lite for simple queries and reviews",
+      "instruction": "Use gemini for: answering questions, code reviews, simple fixes, documentation, explanations."
+    }
+  ],
+  "taskClassification": {
+    "simple": {
+      "description": "Tasks suitable for gemini-flash-lite",
+      "examples": [
+        "Answer questions about code",
+        "Review code for issues",
+        "Simple bug fixes",
+        "Documentation updates",
+        "Explain code",
+        "Format code",
+        "Write simple functions"
+      ]
+    },
+    "standard": {
+      "description": "Tasks suitable for deepseek-chat-v3",
+      "examples": [
+        "Generate new code",
+        "Refactor existing code",
+        "Write tests",
+        "Multi-file changes",
+        "API implementation",
+        "Component creation",
+        "Database queries"
+      ]
+    },
+    "complex": {
+      "description": "Tasks requiring claude-3-haiku",
+      "examples": [
+        "Architecture decisions",
+        "Complex refactoring",
+        "Difficult debugging",
+        "Performance optimization",
+        "Security review",
+        "System design",
+        "Integration strategy"
+      ]
+    }
+  },
+  "fallbackStrategy": {
+    "enabled": true,
+    "order": ["google/gemini-2.0-flash-lite-preview-02-05", "deepseek/deepseek-chat-v3-0324", "anthropic/claude-3-haiku-20240307"],
+    "onFailure": "Try next cheapest available model"
+  }
+}

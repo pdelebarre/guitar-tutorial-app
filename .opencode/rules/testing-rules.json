@@ -1,0 +1,54 @@
+{
+  "$schema": "https://opencode.ai/schema/rules.json",
+  "description": "Testing and QA rules",
+  "rules": [
+    {
+      "id": "backend-testing",
+      "priority": "high",
+      "description": "Write unit tests for backend (JUnit, Mockito)",
+      "instruction": "Test all service methods. Mock external dependencies. Use meaningful test names."
+    },
+    {
+      "id": "frontend-testing",
+      "priority": "high",
+      "description": "Write component tests for frontend (Vitest, RTL)",
+      "instruction": "Test user interactions. Verify rendered output. Mock API calls."
+    },
+    {
+      "id": "integration-testing",
+      "priority": "high",
+      "description": "Create integration tests for API endpoints",
+      "instruction": "Test complete API flows. Use test containers for database. Verify data persistence."
+    },
+    {
+      "id": "coverage-target",
+      "priority": "high",
+      "description": "Maintain test coverage above 80%",
+      "instruction": "Run coverage reports. Add tests for uncovered code. Focus on critical paths."
+    },
+    {
+      "id": "test-naming",
+      "priority": "medium",
+      "description": "Follow test naming conventions",
+      "instruction": "Use descriptive names: method_scenario_expectedResult. Group related tests."
+    },
+    {
+      "id": "test-containers",
+      "priority": "high",
+      "description": "Use test containers for integration tests",
+      "instruction": "Spin up real database containers. Clean up after tests. Use fixed versions."
+    },
+    {
+      "id": "e2e-scenarios",
+      "priority": "medium",
+      "description": "Create E2E test scenarios",
+      "instruction": "Test critical user workflows. Cover happy paths and error cases. Run in CI."
+    },
+    {
+      "id": "test-improvement",
+      "priority": "medium",
+      "description": "Review and improve existing tests",
+      "instruction": "Identify flaky tests. Improve test reliability. Remove duplication."
+    }
+  ]
+}
